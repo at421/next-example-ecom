@@ -1,9 +1,12 @@
 import Link from "next/link";
 
-import Layout from "../layouts/Main";
+export const metadata = {
+  title: 'Register',
+  description: 'Create an account to discover benefits',
+}
 
-const RegisterPage = () => (
-  <Layout>
+const RegisterPage = () => {
+  return (
     <section className="form-page">
       <div className="container">
         <div className="back-button-section">
@@ -85,7 +88,7 @@ const RegisterPage = () => (
         </div>
       </div>
     </section>
-  </Layout>
-);
+  );
+};
 
 export default RegisterPage;
