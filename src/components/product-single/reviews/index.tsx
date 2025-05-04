@@ -1,7 +1,9 @@
+'use client';
+
 import type { ProductType } from "@/types";
 
-import Punctuation from "./punctuation";
-import ReviewsList from "./reviews-list";
+import Punctuation from "../punctuation";
+import ReviewsList from "../reviews-list";
 
 type ReviewsProductType = {
   show: boolean;
