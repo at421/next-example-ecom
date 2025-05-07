@@ -1,13 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from 'next/server';
 
 // fake data
-import products from "../../../utils/data/products";
+import products from '@/utils/data/products';
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  const {
-    query: { pid },
-  } = req;
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { pid: string } }
+) {
+  const { pid } = params;
 
   const product = products.find((x) => x.id === pid);
-  res.status(200).json(product);
-};
+  return NextResponse.json(product, { status: 200 });
+}
