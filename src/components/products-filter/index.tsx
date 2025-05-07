@@ -1,10 +1,11 @@
+'use client';
+
 import Slider from "rc-slider";
 import { useState } from "react";
 
-import productsColors from "../../utils/data/products-colors";
-import productsSizes from "../../utils/data/products-sizes";
-// data
-import productsTypes from "../../utils/data/products-types";
+import productsColors from "@/utils/data/products-colors";
+import productsSizes from "@/utils/data/products-sizes";
+import productsTypes from "@/utils/data/products-types";
 import Checkbox from "./form-builder/checkbox";
 import CheckboxColor from "./form-builder/checkbox-color";
 
@@ -16,6 +17,8 @@ const ProductsFilter = () => {
 
   const addQueryParams = () => {
     // query params changes
+    // If this involved next/router, it would need to be updated
+    // to use hooks from 'next/navigation' like useRouter, useSearchParams, usePathname
   };
 
   return (

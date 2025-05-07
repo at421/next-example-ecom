@@ -1,3 +1,5 @@
+import React from 'react';
+
 type CheckoutStatusProps = {
   step: string;
 };

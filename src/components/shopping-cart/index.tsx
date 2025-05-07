@@ -1,9 +1,11 @@
+'use client';
+
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import type { RootState } from "@/store";
 
-import CheckoutStatus from "../checkout-status";
+import CheckoutStatus from "@/components/checkout-status";
 import Item from "./item";
 
 const ShoppingCart = () => {
