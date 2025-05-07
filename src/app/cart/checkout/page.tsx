@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from 'next/image';
 import { useSelector } from "react-redux";
 
 import CheckoutItems from "@/components/checkout/items";
@@ -132,7 +133,7 @@ const CheckoutPage = () => {
                   <img src="/images/logos/discover.png" alt="Paypal" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/ideal-logo.svg" alt="Paypal" />
+                  <Image src="/images/logos/ideal-logo.svg" alt="iDeal" width={50} height={50} />
                 </li>
               </ul>
             </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image"; // Added import for Image component
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
