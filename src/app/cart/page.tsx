@@ -1,11 +1,15 @@
 import ShoppingCart from "@/components/shopping-cart";
+import type { Metadata } from 'next'
 
-import Layout from "../layouts/Main";
+export const metadata: Metadata = {
+  title: 'Cart',
+  description: 'View and manage your shopping cart.',
+}
 
-const Products = () => (
-  <Layout>
+const CartPage = () => {
+  return (
     <ShoppingCart />
-  </Layout>
-);
+  );
+};
 
-export default Products;
+export default CartPage;

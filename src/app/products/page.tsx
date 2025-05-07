@@ -1,21 +1,24 @@
 import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
 import ProductsContent from "@/components/products-content";
 import ProductsFilter from "@/components/products-filter";
 
-import Layout from "../layouts/Main";
+export const metadata = {
+  title: 'Products Page',
+  description: 'Discover our wide range of products.',
+};
 
-const Products = () => (
-  <Layout>
-    <Breadcrumb />
-    <section className="products-page">
-      <div className="container">
-        <ProductsFilter />
-        <ProductsContent />
-      </div>
-    </section>
-    <Footer />
-  </Layout>
-);
+const ProductsPage = () => {
+  return (
+    <>
+      <Breadcrumb />
+      <section className="products-page">
+        <div className="container">
+          <ProductsFilter />
+          <ProductsContent />
+        </div>
+      </section>
+    </>
+  );
+};
 
-export default Products;
+export default ProductsPage;

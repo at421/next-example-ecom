@@ -1,15 +1,20 @@
 import Link from "next/link";
 
-import Layout from "../layouts/Main";
+export const metadata = {
+  title: 'Register',
+  description: 'Create an account',
+};
 
-const RegisterPage = () => (
-  <Layout>
+const RegisterPage = () => {
+  return (
     <section className="form-page">
       <div className="container">
         <div className="back-button-section">
           <Link href="/products">
+
             <i className="icon-left" />
             Back to store
+
           </Link>
         </div>
 
@@ -85,7 +90,7 @@ const RegisterPage = () => (
         </div>
       </div>
     </section>
-  </Layout>
-);
+  );
+};
 
 export default RegisterPage;
