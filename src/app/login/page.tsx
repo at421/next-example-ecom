@@ -1,8 +1,10 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server";
+import { postData } from "@/utils/services";
 
 type LoginMail = {
   email: string;
@@ -10,13 +12,14 @@ type LoginMail = {
 };
 
 const LoginPage = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginMail>();
 
   const onSubmit = async (data: LoginMail) => {
     await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
     });
+    // Assuming successful login redirects or updates state elsewhere
   };
 
   return (
@@ -43,8 +46,7 @@ const LoginPage = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", {
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -67,8 +69,7 @@ const LoginPage = () => {
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">This field is required</p>
@@ -83,9 +84,8 @@ const LoginPage = () => {
                 >
                   <input
                     type="checkbox"
-                    name="keepSigned"
                     id="check-signed-in"
-                    ref={register({ required: false })}
+                    {...register("keepSigned", { required: false })}
                   />
                   <span className="checkbox__check" />
                   <p>Keep me signed in</p>

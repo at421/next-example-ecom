@@ -1,71 +1,47 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
+import Breadcrumb from '@/components/breadcrumb';
+import Footer from '@/components/footer';
+import ProductClient from '@/components/product-single/ProductClient'; // Import the new Client Component
+import ProductsFeatured from '@/components/products-featured';
+import type { ProductType } from '@/types';
+import { server } from '@/utils/server'; // Use @/ alias
 
-import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
-import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
-import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
-import ProductsFeatured from "@/components/products-featured";
-// types
-import type { ProductType } from "@/types";
-
-import { server } from "../../utils/server";
-
-type ProductPageType = {
-  product: ProductType;
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
+// Metadata function (Server Component only)
+export async function generateMetadata({
+  params,
+}: {
+  params: { pid: string };
+}) {
+  const { pid } = params;
   const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
+  const product: ProductType = await res.json();
 
   return {
-    props: {
-      product,
-    },
+    title: product.name, // Example: Set title based on product name
+    description: product.description, // Example: Set description
+    // Add other metadata tags here (og:image, twitter:card, etc.)
   };
-};
+}
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+// Page component (Server Component by default)
+const ProductPage = async ({ params }: { params: { pid: string } }) => {
+  const { pid } = params;
+
+  // Fetch data directly in the Server Component
+  const res = await fetch(`${server}/api/product/${pid}`);
+  const product: ProductType = await res.json();
+
+  if (!product) {
+    // Handle case where product is not found, maybe redirect to 404
+    // notFound(); // You would need to import notFound from 'next/navigation'
+    return <div>Product not found</div>; // Or render a 404 component/message
+  }
 
   return (
     <>
       <Breadcrumb />
 
-      <section className="product-single">
-        <div className="container">
-          <div className="product-single__content">
-            <Gallery images={product.images} />
-            <Content product={product} />
-          </div>
-
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
-        </div>
-      </section>
+      {/* Render the Client Component, passing the fetched data */}
+      <ProductClient product={product} />
 
       <div className="product-single-page">
         <ProductsFeatured />
@@ -75,4 +51,4 @@ const Product = ({ product }: ProductPageType) => {
   );
 };
 
-export default Product;
+export default ProductPage;
