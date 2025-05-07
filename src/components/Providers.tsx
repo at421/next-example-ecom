@@ -2,23 +2,19 @@
 
 import { wrapper } from '@/store';
 import * as gtag from '@/utils/gtag';
-import Router from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
   useEffect(() => {
-    if (isProduction) {
-      const handleRouteChangeComplete = (url: string) => {
-        gtag.pageview(url);
-      };
-      Router.events.on('routeChangeComplete', handleRouteChangeComplete);
-      return () => {
-        Router.events.off('routeChangeComplete', handleRouteChangeComplete);
-      };
+    if (isProduction && pathname) {
+      gtag.pageview(pathname);
     }
-  }, [isProduction]);
+  }, [pathname, isProduction]);
 
   const WrappedComponent = wrapper.withRedux(({ children }: { children: React.ReactNode }) => (
     <>{children}</>

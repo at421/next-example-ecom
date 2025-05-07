@@ -1,3 +1,5 @@
+'use client';
+
 type CheckboxColorType = {
   type?: string;
   name: string;

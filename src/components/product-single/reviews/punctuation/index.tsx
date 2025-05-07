@@ -1,3 +1,5 @@
+'use client';
+
 import Rater from "react-rater";
 
 import type { PunctuationType } from "@/types";
@@ -8,6 +10,7 @@ const Punctuation = ({
   countOpinions,
 }: PunctuationType) => {
   const percentageBar = (count: number) => {
+    if (countOpinions === 0) return 0;
     return (count * 100) / countOpinions;
   };
 

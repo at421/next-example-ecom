@@ -1,3 +1,5 @@
+'use client';
+
 import { some } from "lodash";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +41,7 @@ const ProductItem = ({
         </button>
 
         <Link href={`/product/${id}`}>
+
           <img src={images ? images[0] : ""} alt="product" />
           {discount && <span className="product__discount">{discount}%</span>}
         </Link>

@@ -1,14 +1,16 @@
+'use client';
+
 // import Swiper core and required components
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import type { ProductTypeList } from "@/types";
 
-import ProductItem from "../../product-item";
+import ProductItem from "@/components/product-item";
 
 let slidesPerView = 1.3;
 let centeredSlides = true;
 let spaceBetween = 30;
-if (process.browser) {
+if (typeof window !== 'undefined') {
   if (window.innerWidth > 768) {
     slidesPerView = 3;
     spaceBetween = 35;

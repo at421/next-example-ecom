@@ -1,24 +1,26 @@
+'use client';
+
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import useOnClickOutside from "use-onclickoutside";
+import useOnClickOutside from "use-onclickoutside"; // Assuming this hook is compatible
 
 import type { RootState } from "@/store";
 
-import Logo from "../../assets/icons/logo";
+import Logo from "@/assets/icons/logo";
 
 type HeaderType = {
   isErrorPage?: boolean;
 };
 
 const Header = ({ isErrorPage }: HeaderType) => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const arrayPaths = ["/"];
 
   const [onTop, setOnTop] = useState(
-    !(!arrayPaths.includes(router.pathname) || isErrorPage),
+    !(!arrayPaths.includes(pathname) || isErrorPage),
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -34,7 +36,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   };
 
   useEffect(() => {
-    if (!arrayPaths.includes(router.pathname) || isErrorPage) {
+    if (!arrayPaths.includes(pathname) || isErrorPage) {
       return;
     }
 
@@ -42,7 +44,11 @@ const Header = ({ isErrorPage }: HeaderType) => {
     window.onscroll = function () {
       headerClass();
     };
-  }, []);
+
+    return () => {
+      window.onscroll = null; // Cleanup
+    };
+  }, [pathname, isErrorPage]); // Added dependencies for useEffect
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -70,35 +76,43 @@ const Header = ({ isErrorPage }: HeaderType) => {
           className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
         >
           <Link href="/products">Products</Link>
-          <a href="#">Inspiration</a>
-          <a href="#">Rooms</a>
-          <button className="site-nav__btn">
-            <p>Account</p>
-          </button>
+          <a href="#">Inspiration</a> {/* Keep as a tag if it's not a Next.js route */}
+          <a href="#">Rooms</a> {/* Keep as a tag if it's not a Next.js route */}
+          {/* Assuming Account button triggers client-side logic or uses a Link */}
+          <Link href="/login">
+            <button className="site-nav__btn">
+              <p>Account</p>
+            </button>
+          </Link>
         </nav>
 
         <div className="site-header__actions">
           <button
             ref={searchRef}
             className={`search-form-wrapper ${searchOpen ? "search-form--active" : ""}`}
+            onClick={() => setSearchOpen(!searchOpen)} // Toggle search form visibility
           >
+             {/* The button now wraps the form/icon, handle click on button */}
             <form className="search-form">
+              {/* Icon inside form, maybe for closing? */}
               <i
                 className="icon-cancel"
-                onClick={() => setSearchOpen(!searchOpen)}
+                onClick={(e) => { e.stopPropagation(); setSearchOpen(false); }} // Stop propagation to not close the button
               />
               <input
                 type="text"
                 name="search"
                 placeholder="Enter the product you are looking for"
+                onClick={(e) => e.stopPropagation()} // Stop propagation to not close the button
               />
             </form>
-            <i
-              onClick={() => setSearchOpen(!searchOpen)}
+             {/* Icon outside form, for opening/toggling */}
+             <i
               className="icon-search"
             />
           </button>
-          <Link href="/cart" legacyBehavior>
+          {/* Removed legacyBehavior */}
+          <Link href="/cart">
             <button className="btn-cart">
               <i className="icon-cart" />
               {cartItems.length > 0 && (
@@ -106,7 +120,8 @@ const Header = ({ isErrorPage }: HeaderType) => {
               )}
             </button>
           </Link>
-          <Link href="/login" legacyBehavior>
+          {/* Removed legacyBehavior */}
+          <Link href="/login">
             <button className="site-header__btn-avatar">
               <i className="icon-avatar" />
             </button>
