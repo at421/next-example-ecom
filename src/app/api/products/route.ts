@@ -1,11 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from 'next/server';
 
 // fake data
-import products from "../../utils/data/products";
+// Assuming the utils folder is still accessible at this relative path
+import products from '../../utils/data/products';
 
-export default (_req: NextApiRequest, res: NextApiResponse) => {
+export async function GET(request: Request) {
   // fake loading time
-  setTimeout(() => {
-    res.status(200).json(products);
-  }, 800);
-};
+  await new Promise(resolve => setTimeout(resolve, 800));
+
+  return NextResponse.json(products, { status: 200 });
+}
