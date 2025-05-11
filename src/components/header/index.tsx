@@ -1,8 +1,8 @@
 'use client';
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
 
@@ -15,10 +15,9 @@ type HeaderType = {
 };
 
 const Header = ({ isErrorPage }: HeaderType) => {
-  const router = useRouter(); // Keep useRouter for potential future navigation needs, though pathname is separate
-  const pathname = usePathname(); // Get pathname from next/navigation
+  const pathname = usePathname();
   const { cartItems } = useSelector((state: RootState) => state.cart);
-  const arrayPaths = ["/"];
+  const arrayPaths = useMemo(() => ["/"], []);
 
   const [onTop, setOnTop] = useState(
     !(!arrayPaths.includes(pathname) || isErrorPage),
@@ -37,9 +36,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   };
 
   useEffect(() => {
-    // Use pathname from usePathname()
     if (!arrayPaths.includes(pathname) || isErrorPage) {
-      // Clean up the scroll listener if we return early
       window.onscroll = null;
       return;
     }
@@ -49,11 +46,10 @@ const Header = ({ isErrorPage }: HeaderType) => {
       headerClass();
     };
 
-    // Clean up the scroll listener when the component unmounts
     return () => {
       window.onscroll = null;
     };
-  }, [pathname, isErrorPage]); // Add pathname and isErrorPage as dependencies
+  }, [pathname, isErrorPage, arrayPaths]);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -63,7 +59,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
     setSearchOpen(false);
   };
 
-  // on click outside
   useOnClickOutside(navRef, closeMenu);
   useOnClickOutside(searchRef, closeSearch);
 
@@ -109,7 +104,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
               className="icon-search"
             />
           </button>
-          {/* legacyBehavior is not needed in App Router Link */}
           <Link href="/cart">
             <button className="btn-cart">
               <i className="icon-cart" />
@@ -118,7 +112,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
               )}
             </button>
           </Link>
-          {/* legacyBehavior is not needed in App Router Link */}
           <Link href="/login">
             <button className="site-header__btn-avatar">
               <i className="icon-avatar" />

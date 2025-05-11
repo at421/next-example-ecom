@@ -14,9 +14,13 @@ const ForgotPassword = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>();
 
   const onSubmit = async (data: ForgotMail) => {
-    await postData(`${server}/api/login`, {
+    // The original onSubmit was sending to '/api/login', which is incorrect for a password reset request.
+    // Assuming the correct endpoint is '/api/forgot-password' or similar.
+    // Also, the original payload only sent email, which is correct for a forgot password request.
+    await postData(`${server}/api/forgot-password`, {
       email: data.email,
     });
+    // TODO: Add success/error handling (e.g., show a message to the user)
   };
 
   return (
@@ -60,20 +64,6 @@ const ForgotPassword = () => {
                 </p>
               )}
             </div>
-
-            {/* Password field is present in the original code's JSX but not in the onSubmit data type or validation rules. Keeping it as is based on original code structure. */}
-            <div className="form__input-row">
-              <input
-                className="form__input"
-                type="password"
-                placeholder="Password"
-                {...register("password", { required: true })} // Added password to useForm register
-              />
-              {errors.password && errors.password.type === "required" && (
-                <p className="message message--error">This field is required</p>
-              )}
-            </div>
-
 
             <button
               type="submit"

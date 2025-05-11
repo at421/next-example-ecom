@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from 'next/image';
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
@@ -9,6 +10,7 @@ import { postData } from "@/utils/services";
 type LoginMail = {
   email: string;
   password: string;
+  keepSigned?: boolean;
 };
 
 const LoginPage = () => {
@@ -18,6 +20,7 @@ const LoginPage = () => {
     await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
+      keepSigned: data.keepSigned,
     });
   };
 
@@ -45,11 +48,11 @@ const LoginPage = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                {...register("email", {
+                {...(register("email", {
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                })}
+                }) as any)}
               />
 
               {errors.email && errors.email.type === "required" && (
@@ -70,7 +73,7 @@ const LoginPage = () => {
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                {...register("password", { required: true })}
+                {...(register("password", { required: true }) as any)}
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">
@@ -88,7 +91,7 @@ const LoginPage = () => {
                   <input
                     type="checkbox"
                     id="check-signed-in"
-                    {...register("keepSigned", { required: false })}
+                    {...(register("keepSigned") as any)}
                   />
                   <span className="checkbox__check" />
                   <p>Keep me signed in</p>
@@ -108,8 +111,7 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
-                {/* Assuming /images is in the public directory */}
-                <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                <Image src="/images/icons/gmail.svg" alt="gmail" width={20} height={20} /> Gmail
               </button>
             </div>
 

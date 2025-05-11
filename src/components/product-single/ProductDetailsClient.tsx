@@ -43,8 +43,8 @@ const ProductDetailsClient = ({ product }: ProductDetailsClientProps) => {
           </div>
 
           {/* Render Description or Reviews based on state */}
-          {showBlock === "description" && <Description />}
-          {showBlock === "reviews" && <Reviews product={product} />}
+          {showBlock === "description" && <Description show={true} />}
+          {showBlock === "reviews" && <Reviews product={product} show={true} />}
         </div>
       </div>
     </section>
