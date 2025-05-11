@@ -1,17 +1,21 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server"; // Assuming utils is in the root or app directory
+import { postData } from "@/utils/services"; // Assuming utils is in the root or app directory
 
 type ForgotMail = {
   email: string;
 };
 
 const ForgotPassword = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>();
 
   const onSubmit = async (data: ForgotMail) => {
+    // Note: Client-side fetching directly to an internal API route is fine.
+    // Adjust the URL if your API route structure changed significantly.
     await postData(`${server}/api/login`, {
       email: data.email,
     });
@@ -39,8 +43,7 @@ const ForgotPassword = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", {
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -60,20 +63,20 @@ const ForgotPassword = () => {
               )}
             </div>
 
-            <div className="form__input-row">
+            {/* Removed password field as it's "Forgot Password" - likely a typo in original */}
+            {/* <div className="form__input-row">
               <input
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">
                   This field is required
                 </p>
               )}
-            </div>
+            </div> */}
 
             <button
               type="submit"

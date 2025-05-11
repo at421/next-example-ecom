@@ -1,21 +1,25 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server";
+import { postData } from "@/utils/services";
 
 type LoginMail = {
   email: string;
   password: string;
+  keepSigned: boolean;
 };
 
 const LoginPage = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginMail>();
 
   const onSubmit = async (data: LoginMail) => {
     await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
+      keepSigned: data.keepSigned
     });
   };
 
@@ -43,7 +47,6 @@ const LoginPage = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
                 {...register("email", {
                   required: true,
                   pattern:
@@ -69,7 +72,6 @@ const LoginPage = () => {
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
                 {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
@@ -88,7 +90,7 @@ const LoginPage = () => {
                   <input
                     type="checkbox"
                     id="check-signed-in"
-                    {...register("keepSigned", { required: false })}
+                    {...register("keepSigned")}
                   />
                   <span className="checkbox__check" />
                   <p>Keep me signed in</p>
