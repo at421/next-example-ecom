@@ -1,13 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from 'next/server';
+// fake data - assuming the path relative to the project root remains the same
+import products from '../../../utils/data/products';
 
-// fake data
-import products from "../../../utils/data/products";
-
-export default (req: NextApiRequest, res: NextApiResponse) => {
-  const {
-    query: { pid },
-  } = req;
+export async function GET(request: Request, { params }: { params: { pid: string } }) {
+  const { pid } = params;
 
   const product = products.find((x) => x.id === pid);
-  res.status(200).json(product);
-};
+
+  if (product) {
+    return NextResponse.json(product, { status: 200 });
+  } else {
+    return NextResponse.json({ message: 'Product not found' }, { status: 404 });
+  }
+}
