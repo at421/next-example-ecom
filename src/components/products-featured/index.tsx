@@ -1,11 +1,14 @@
+'use client';
+
 import Link from "next/link";
 import useSwr from "swr";
 
 import ProductsCarousel from "./carousel";
+import { IProduct } from "@/types"; // Assuming IProduct type is defined here based on project structure
 
 const ProductsFeatured = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const { data } = useSwr("/api/products", fetcher);
+  const { data } = useSwr<IProduct[]>("/api/products", fetcher); // Assuming data is an array of products
 
   return (
     <section className="section section-products-featured">
