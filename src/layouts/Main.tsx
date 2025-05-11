@@ -1,23 +1,18 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
+'use client';
+
+import { usePathname } from "next/navigation";
 
 import Header from "@/components/header";
 
 type LayoutType = {
-  title?: string;
   children?: React.ReactNode;
 };
 
-const MainLayout = ({ children, title = "Next.js Ecommerce" }: LayoutType) => {
-  const router = useRouter();
-  const pathname = router.pathname;
+const MainLayout = ({ children }: LayoutType) => {
+  const pathname = usePathname();
 
   return (
     <div className="app-main">
-      <Head>
-        <title>{title}</title>
-      </Head>
-
       <Header />
 
       <main className={pathname !== "/" ? "main-page" : ""}>{children}</main>

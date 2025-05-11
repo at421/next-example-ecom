@@ -1,3 +1,5 @@
+'use client';
+
 import Rater from "react-rater";
 
 import type { ReviewType } from "@/types";
@@ -13,6 +15,7 @@ const ReviewsList = ({ reviews }: ReviewsListType) => {
       {reviews.map((review, index) => (
         <div key={index} className="review-item">
           <div className="review__avatar">
+            {/* Assuming review.avatar is a URL or path */}
             <img src={review.avatar} alt="avatar" />
           </div>
 

@@ -1,3 +1,5 @@
+'use client';
+
 type CheckboxType = {
   type?: string;
   label: string;
