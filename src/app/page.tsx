@@ -1,7 +1,10 @@
-import Footer from "@/components/footer";
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
-import Subscribe from "@/components/subscribe";
+
+export const metadata = {
+  title: 'Home Page',
+  description: 'Welcome to our store!',
+};
 
 const IndexPage = () => {
   return (
@@ -103,8 +106,6 @@ const IndexPage = () => {
       </section>
 
       <ProductsFeatured />
-      <Subscribe />
-      <Footer />
     </>
   );
 };

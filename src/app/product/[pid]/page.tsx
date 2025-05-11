@@ -1,78 +1,74 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
-
+import { Metadata } from 'next';
 import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
-import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
-import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
 import ProductsFeatured from "@/components/products-featured";
-// types
+import ProductClient from "@/components/product-single/ProductClient";
 import type { ProductType } from "@/types";
 
-import { server } from "../../utils/server";
+async function getProduct(pid: string): Promise<ProductType | null> {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/product/${pid}`, {
+      next: { revalidate: 3600 } // Revalidate data every hour
+    });
 
-type ProductPageType = {
-  product: ProductType;
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      // For 404s, consider using notFound() from next/navigation
+      console.error(`Failed to fetch product ${pid}: ${res.status}`);
+      return null;
+    }
+
+    const product = await res.json();
+    return product as ProductType;
+  } catch (error) {
+    console.error(`Error fetching product ${pid}:`, error);
+    return null;
+  }
+}
+
+type Props = {
+  params: { pid: string };
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const product = await getProduct(params.pid);
 
   return {
-    props: {
-      product,
-    },
+    title: product ? product.name : 'Product Not Found',
+    description: product ? product.description : 'Details for the product',
+    // Add other metadata like Open Graph, etc.
   };
-};
+}
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+
+export default async function ProductPage({ params }: Props) {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    // Handle case where product is not found, e.g., return a 404 component
+    // For simplicity, we might throw an error or return null,
+    // but a dedicated not-found page is better.
+    // For now, let's render a basic message or use next/navigation's notFound()
+     // notFound(); // Uncomment and import notFound if you have app/product/[pid]/not-found.tsx
+     return <div>Product not found</div>; // Basic fallback
+  }
 
   return (
     <>
       <Breadcrumb />
 
+      {/* The main product section is rendered here */}
       <section className="product-single">
         <div className="container">
-          <div className="product-single__content">
-            <Gallery images={product.images} />
-            <Content product={product} />
-          </div>
-
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
+           {/* ProductClient handles the interactive parts */}
+          <ProductClient product={product} />
         </div>
       </section>
 
       <div className="product-single-page">
         <ProductsFeatured />
       </div>
-      <Footer />
+      {/* Footer is likely handled by a global layout */}
+      {/* <Footer /> */}
     </>
   );
-};
-
-export default Product;
+}
