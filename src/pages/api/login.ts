@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // fake login
-export default (req: NextApiRequest, res: NextApiResponse) => {
+const handler = (req: NextApiRequest, res: NextApiResponse) => {
   const request = req.body;
   const { email } = request;
   const { password } = request;
@@ -12,3 +12,5 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     res.status(401).json({ status: false });
   }
 };
+
+export default handler;

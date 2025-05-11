@@ -1,11 +1,13 @@
 'use client';
 
+import { useEffect } from 'react';
 import SwiperCore, { EffectFade, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-SwiperCore.use([EffectFade, Navigation]);
-
 const PageIntro = () => {
+  useEffect(() => {
+    SwiperCore.use([EffectFade, Navigation]);
+  }, []);
 
   return (
     <section className="page-intro">
@@ -31,7 +33,7 @@ const PageIntro = () => {
           <div
             className="page-intro__slide"
             style={{ backgroundImage: "url('/images/slide-2.jpg')" }}
-          >
+        >
             <div className="container">
               <div className="page-intro__slide__content">
                 <h2>Make your house into a home</h2>

@@ -1,3 +1,5 @@
+'use client';
+
 import Breadcrumb from "@/components/breadcrumb";
 import Footer from "@/components/footer";
 import Content from "@/components/product-single/content";
@@ -64,7 +66,6 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 export default ProductPage;
 
 // --- components/product-single/info-tabs/index.tsx ---
-'use client';
 
 import { useState } from "react";
 
@@ -109,4 +110,6 @@ const ProductInfoTabs = ({ product }: ProductInfoTabsProps) => {
   );
 };
 
-export default ProductInfoTabs;
+// Note: This component is part of the ProductPage which is now a client component.
+// It does not need its own 'use client' directive.
+// export default ProductInfoTabs; // Exporting ProductInfoTabs from index.tsx

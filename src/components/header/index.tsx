@@ -54,7 +54,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
     return () => {
         window.onscroll = null;
     };
-  }, [pathname, isErrorPage]);
+  }, [pathname, isErrorPage, arrayPaths]);
 
   const closeMenu = () => {
     setMenuOpen(false);

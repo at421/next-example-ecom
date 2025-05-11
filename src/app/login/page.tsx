@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image"; // Added import for Image
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
@@ -36,7 +37,7 @@ const LoginPage = () => {
           <p className="form-block__description">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s
+            since the 1500s
           </p>
 
           <form className="form" onSubmit={handleSubmit(onSubmit)}>
@@ -104,8 +105,8 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
-                {/* Assuming image path is correct relative to public dir */}
-                <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                {/* Replaced img tag with Image component */}
+                <Image src="/images/icons/gmail.svg" alt="gmail" width={24} height={24} /> Gmail
               </button>
             </div>
 

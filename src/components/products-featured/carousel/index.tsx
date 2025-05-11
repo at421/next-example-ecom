@@ -74,7 +74,7 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
               currentPrice={item.currentPrice}
               images={item.images}
             />
-          </SwperSlide>
+          </SwiperSlide>
         ))}
       </Swiper>
     </div>
