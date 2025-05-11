@@ -1,22 +1,35 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server"; // Updated import path
+import { postData } from "@/utils/services"; // Updated import path
 
 type LoginMail = {
   email: string;
   password: string;
+  keepSigned?: boolean; // Added keepSigned based on form usage
 };
 
 const LoginPage = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginMail>(); // Use formState for errors
 
   const onSubmit = async (data: LoginMail) => {
-    await postData(`${server}/api/login`, {
-      email: data.email,
-      password: data.password,
-    });
+    // The original code didn't handle the response or errors from postData.
+    // In a real application, you'd add error handling and potentially redirect on success.
+    try {
+      const response = await postData(`${server}/api/login`, {
+        email: data.email,
+        password: data.password,
+        keepSigned: data.keepSigned, // Include keepSigned
+      });
+      console.log("Login successful", response);
+      // Handle success, e.g., redirect or show success message
+    } catch (error) {
+      console.error("Login failed", error);
+      // Handle error, e.g., show error message
+    }
   };
 
   return (
@@ -43,8 +56,7 @@ const LoginPage = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", { // Use spread operator for register
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -69,8 +81,7 @@ const LoginPage = () => {
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })} // Use spread operator for register
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">
@@ -87,9 +98,8 @@ const LoginPage = () => {
                 >
                   <input
                     type="checkbox"
-                    name="keepSigned"
                     id="check-signed-in"
-                    ref={register({ required: false })}
+                    {...register("keepSigned")} // Use spread operator for register
                   />
                   <span className="checkbox__check" />
                   <p>Keep me signed in</p>
@@ -109,6 +119,7 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
+                {/* Assuming /images/icons/gmail.svg is in the public directory */}
                 <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
               </button>
             </div>

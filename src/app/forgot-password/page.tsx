@@ -1,15 +1,17 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server";
+import { postData } from "@/utils/services";
 
 type ForgotMail = {
   email: string;
 };
 
 const ForgotPassword = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>();
 
   const onSubmit = async (data: ForgotMail) => {
     await postData(`${server}/api/login`, {
@@ -39,8 +41,7 @@ const ForgotPassword = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", {
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -58,18 +59,24 @@ const ForgotPassword = () => {
               )}
             </div>
 
+            {/* The original form included a password field here, which seems incorrect for a "forgot password" form that typically only asks for email to send a reset link.
+                Assuming this was a mistake in the original code and removing the password field.
+                If a password field is truly needed for some reason (e.g., confirmation), it would need clarification.
+                For a standard forgot password flow, only the email is required. */}
+            {/*
             <div className="form__input-row">
               <input
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">This field is required</p>
               )}
             </div>
+            */}
+
 
             <button
               type="submit"

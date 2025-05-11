@@ -1,7 +1,7 @@
 import ShoppingCart from "@/components/shopping-cart";
 
-const Products = () => (
-  <ShoppingCart />
-);
+const Page = () => {
+  return <ShoppingCart />;
+};
 
-export default Products;
+export default Page;
