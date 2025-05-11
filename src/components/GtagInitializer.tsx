@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import * as gtag from '../utils/gtag';
+import * as gtag from '@/utils/gtag';
 
 const isProduction = process.env.NODE_ENV === 'production';
 

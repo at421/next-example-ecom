@@ -1,5 +1,5 @@
 const ProductItemLoading = () => (
-  <a href="#" className="product-item product-item--loading">
+  <a className="product-item product-item--loading">
     <div className="product__image" />
 
     <div className="product__description">

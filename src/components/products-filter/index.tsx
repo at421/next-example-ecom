@@ -1,12 +1,14 @@
-import Slider from "rc-slider";
-import { useState } from "react";
+'use client';
 
-import productsColors from "../../utils/data/products-colors";
-import productsSizes from "../../utils/data/products-sizes";
+import Slider from 'rc-slider';
+import { useState } from 'react';
+
+import productsColors from '@/utils/data/products-colors';
+import productsSizes from '@/utils/data/products-sizes';
 // data
-import productsTypes from "../../utils/data/products-types";
-import Checkbox from "./form-builder/checkbox";
-import CheckboxColor from "./form-builder/checkbox-color";
+import productsTypes from '@/utils/data/products-types';
+import Checkbox from './form-builder/checkbox';
+import CheckboxColor from './form-builder/checkbox-color';
 
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
@@ -23,13 +25,17 @@ const ProductsFilter = () => {
       <button
         type="button"
         onClick={() => setFiltersOpen(!filtersOpen)}
-        className={`products-filter__menu-btn ${filtersOpen ? "products-filter__menu-btn--active" : ""}`}
+        className={`products-filter__menu-btn ${
+          filtersOpen ? 'products-filter__menu-btn--active' : ''
+        }`}
       >
         Add Filter <i className="icon-down-open" />
       </button>
 
       <div
-        className={`products-filter__wrapper ${filtersOpen ? "products-filter__wrapper--open" : ""}`}
+        className={`products-filter__wrapper ${
+          filtersOpen ? 'products-filter__wrapper--open' : ''
+        }`}
       >
         <div className="products-filter__block">
           <button type="button">Product type</button>
@@ -47,7 +53,7 @@ const ProductsFilter = () => {
               min={0}
               max={20}
               defaultValue={[3, 10]}
-              tipFormatter={(value) => `${value}%`}
+              tipFormatter={(value: number) => `${value}%`}
             />
           </div>
         </div>

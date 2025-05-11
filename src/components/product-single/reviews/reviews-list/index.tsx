@@ -18,6 +18,7 @@ const ReviewsList = ({ reviews }: ReviewsListType) => {
 
           <div className="review__content">
             <h3>{review.name}</h3>
+            {/* Rater might be a client component internally, but used here without interactivity */}
             <Rater total={5} interactive={false} rating={review.punctuation} />
             <div
               className="review__comment"
