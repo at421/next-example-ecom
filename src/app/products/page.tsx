@@ -1,7 +1,12 @@
 import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
 import ProductsContent from "@/components/products-content";
 import ProductsFilter from "@/components/products-filter";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Products",
+  description: "Explore our wide range of products.",
+};
 
 const Products = () => (
   <>
@@ -12,7 +17,6 @@ const Products = () => (
         <ProductsContent />
       </div>
     </section>
-    <Footer />
   </>
 );
 
