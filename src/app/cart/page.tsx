@@ -1,9 +1,14 @@
 import ShoppingCart from "@/components/shopping-cart";
 
-const Products = () => (
-  <>
-    <ShoppingCart />
-  </>
-);
+export const metadata = {
+  title: 'Shopping Cart',
+  description: 'View and manage your shopping cart items.',
+};
 
-export default Products;
+const CartPage = () => {
+  return (
+    <ShoppingCart />
+  );
+};
+
+export default CartPage;

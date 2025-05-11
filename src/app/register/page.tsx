@@ -1,5 +1,10 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: 'Register',
+  description: 'Create an account to explore exclusive features.',
+};
+
 const RegisterPage = () => (
   <section className="form-page">
     <div className="container">

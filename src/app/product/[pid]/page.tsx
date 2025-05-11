@@ -1,78 +1,73 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
+import type { Metadata } from "next";
 
-import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
 import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
 import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
 import ProductsFeatured from "@/components/products-featured";
+import ProductDetailsClient from "./ProductDetailsClient";
 // types
 import type { ProductType } from "@/types";
 
-import { server } from "../../utils/server";
+import { server } from "@/utils/server";
 
-type ProductPageType = {
-  product: ProductType;
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
-
-  return {
-    props: {
-      product,
-    },
+type ProductPageProps = {
+  params: {
+    pid: string;
   };
 };
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+async function getProduct(pid: string): Promise<ProductType | null> {
+  try {
+    const res = await fetch(`${server}/api/product/${pid}`);
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      throw new Error("Failed to fetch product data");
+    }
+    const product = await res.json();
+    return product;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const product = await getProduct(params.pid);
+
+  return {
+    title: product ? product.name : "Product Not Found",
+    description: product ? product.description : "Details about the product",
+  };
+}
+
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    // Handle case where product is not found, perhaps redirect to a 404 page
+    return <div>Product not found</div>; // Or use Next.js notFound() helper
+  }
 
   return (
     <>
-      <Breadcrumb />
-
       <section className="product-single">
         <div className="container">
           <div className="product-single__content">
             <Gallery images={product.images} />
             <Content product={product} />
           </div>
-
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
+          {/* Client component handles description/reviews section */}
+          <ProductDetailsClient product={product} />
         </div>
       </section>
 
       <div className="product-single-page">
         <ProductsFeatured />
       </div>
-      <Footer />
+      {/* Breadcrumb and Footer are assumed to be handled by the root layout */}
     </>
   );
 };
 
-export default Product;
+export default ProductPage;

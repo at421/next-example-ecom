@@ -1,19 +1,25 @@
 import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
 import ProductsContent from "@/components/products-content";
 import ProductsFilter from "@/components/products-filter";
+import type { Metadata } from 'next';
 
-const Products = () => (
-  <>
-    <Breadcrumb />
-    <section className="products-page">
-      <div className="container">
-        <ProductsFilter />
-        <ProductsContent />
-      </div>
-    </section>
-    <Footer />
-  </>
-);
+export const metadata: Metadata = {
+  title: 'Products',
+  description: 'Browse our collection of products',
+};
 
-export default Products;
+const ProductsPage = () => {
+  return (
+    <>
+      <Breadcrumb />
+      <section className="products-page">
+        <div className="container">
+          <ProductsFilter />
+          <ProductsContent />
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default ProductsPage;

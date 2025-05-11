@@ -1,7 +1,12 @@
-import Footer from "@/components/footer";
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Home | E-Commerce', // Replace with actual site title logic if needed
+  description: 'Welcome to our e-commerce store!', // Replace with actual description logic if needed
+}
 
 const IndexPage = () => {
   return (
@@ -104,7 +109,6 @@ const IndexPage = () => {
 
       <ProductsFeatured />
       <Subscribe />
-      <Footer />
     </>
   );
 };
