@@ -1,36 +1,48 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
-
 import Breadcrumb from "@/components/breadcrumb";
 import Footer from "@/components/footer";
 import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
 import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
 import ProductsFeatured from "@/components/products-featured";
+import ProductInfoTabs from "@/components/product-single/ProductInfoTabs"; // New Client Component
+
 // types
 import type { ProductType } from "@/types";
 
-import { server } from "../../utils/server";
+import { server } from "@/utils/server"; // Assuming utils is at the root
 
-type ProductPageType = {
-  product: ProductType;
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
-
-  return {
-    props: {
-      product,
-    },
+type ProductPageProps = {
+  params: {
+    pid: string;
   };
 };
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+// Fetch data directly in the Server Component
+async function getProduct(pid: string): Promise<ProductType> {
+  const res = await fetch(`${server}/api/product/${pid}`);
+  // Add error handling if needed, e.g., check res.ok
+  const product = await res.json();
+  return product;
+}
+
+// Metadata is exported directly from the Server Component page
+export async function generateMetadata({ params }: ProductPageProps) {
+  const product = await getProduct(params.pid);
+
+  return {
+    title: product?.name || "Product",
+    description: product?.description || "Product details",
+    // Add other metadata like og:image, etc.
+  };
+}
+
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    // Handle case where product is not found (e.g., return notFound())
+    // For simplicity, returning null or an empty div here
+    return null; // Or redirect, or show 404
+  }
 
   return (
     <>
@@ -44,25 +56,8 @@ const Product = ({ product }: ProductPageType) => {
           </div>
 
           <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
+            {/* Render the new Client Component for tabs */}
+            <ProductInfoTabs product={product} />
           </div>
         </div>
       </section>
@@ -70,9 +65,10 @@ const Product = ({ product }: ProductPageType) => {
       <div className="product-single-page">
         <ProductsFeatured />
       </div>
+      {/* Assuming Footer is a Server Component or can be rendered on server */}
       <Footer />
     </>
   );
 };
 
-export default Product;
+export default ProductPage;

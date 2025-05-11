@@ -1,7 +1,12 @@
-import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
 import ProductsContent from "@/components/products-content";
 import ProductsFilter from "@/components/products-filter";
+import Breadcrumb from "@/components/breadcrumb";
+import Footer from "@/components/footer";
+
+export const metadata = {
+  title: 'Products',
+  description: 'Browse our collection of products',
+};
 
 const Products = () => (
   <>

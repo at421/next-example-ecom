@@ -1,9 +1,14 @@
-import Footer from "@/components/footer";
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
+import Footer from "@/components/footer";
 
-const IndexPage = () => {
+export const metadata = {
+  title: 'Home Page',
+  description: 'Welcome to the home page of the store.',
+};
+
+const HomePage = () => {
   return (
     <>
       <PageIntro />
@@ -16,7 +21,7 @@ const IndexPage = () => {
           >
             <div className="featured-item__content">
               <h3>New arrivals are now in!</h3>
-              <a href="#" className="btn btn--rounded">
+              <a href="/products" className="btn btn--rounded">
                 Show Collection
               </a>
             </div>
@@ -28,7 +33,7 @@ const IndexPage = () => {
           >
             <div className="featured-item__content">
               <h3>Basic t-shirts $29,99</h3>
-              <a href="#" className="btn btn--rounded">
+              <a href="/products" className="btn btn--rounded">
                 More details
               </a>
             </div>
@@ -40,7 +45,7 @@ const IndexPage = () => {
           >
             <div className="featured-item__content">
               <h3>Sale this summer</h3>
-              <a href="#" className="btn btn--rounded">
+              <a href="/products" className="btn btn--rounded">
                 VIEW ALL
               </a>
             </div>
@@ -109,4 +114,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default HomePage;
