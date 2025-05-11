@@ -3,11 +3,10 @@ import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
 
-import Layout from "../layouts/Main";
 
 const IndexPage = () => {
   return (
-    <Layout>
+    <>
       <PageIntro />
 
       <section className="featured">
@@ -107,7 +106,7 @@ const IndexPage = () => {
       <ProductsFeatured />
       <Subscribe />
       <Footer />
-    </Layout>
+    </>
   );
 };
 
