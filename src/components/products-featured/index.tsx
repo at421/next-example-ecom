@@ -1,7 +1,9 @@
+'use client';
+
 import Link from "next/link";
 import useSwr from "swr";
 
-import ProductsCarousel from "./carousel";
+import ProductsCarousel from "./carousel"; // Assuming carousel is still a sibling directory
 
 const ProductsFeatured = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -17,7 +19,8 @@ const ProductsFeatured = () => {
           </Link>
         </header>
 
-        <ProductsCarousel products={data} />
+        {/* Render carousel only when data is available */}
+        {data && <ProductsCarousel products={data} />}
       </div>
     </section>
   );

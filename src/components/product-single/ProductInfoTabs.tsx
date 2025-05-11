@@ -6,7 +6,7 @@ import Reviews from "@/components/product-single/reviews";
 import type { ProductType } from "@/types";
 
 type ProductInfoTabsProps = {
-    product: ProductType; // Pass product data down from the server component
+    product: ProductType;
 };
 
 const ProductInfoTabs = ({ product }: ProductInfoTabsProps) => {
@@ -27,14 +27,11 @@ const ProductInfoTabs = ({ product }: ProductInfoTabsProps) => {
           onClick={() => setShowBlock("reviews")}
           className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
         >
-          Reviews ({product?.reviews?.length || 0}) {/* Use product data for count */}
+          Reviews ({product?.reviews?.length || 0})
         </button>
       </div>
 
-      {/* Pass necessary props to children if they need product data */}
-      {/* Description doesn't seem to need product data in the original code */}
       <Description show={showBlock === "description"} />
-      {/* Reviews needs product data for listing reviews */}
       <Reviews product={product} show={showBlock === "reviews"} />
     </>
   );

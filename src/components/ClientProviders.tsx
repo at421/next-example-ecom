@@ -2,8 +2,8 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { Provider } from 'react-redux'; // Assuming react-redux Provider
-import { useWrappedStore } from '@/store'; // Assuming wrapper exports useWrappedStore
+import { Provider } from 'react-redux';
+import { useWrappedStore } from '@/store';
 
 import * as gtag from '@/utils/gtag';
 

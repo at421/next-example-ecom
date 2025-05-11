@@ -1,28 +1,44 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
+'use client';
 
-import Header from "@/components/header";
+import { usePathname } from 'next/navigation';
 
-type LayoutType = {
-  title?: string;
-  children?: React.ReactNode;
-};
+import Header from '@/components/header';
 
-const ErrorPage = ({ children, title = "Next.js Ecommerce" }: LayoutType) => {
-  const router = useRouter();
-  const pathname = router.pathname;
+// The not-found page in app router does not receive children like a traditional layout
+// and its metadata is handled by exporting a metadata object.
+
+const NotFoundPage = () => {
+  const pathname = usePathname();
+
+  // The conditional class based on pathname !== "/" might not be strictly necessary
+  // for a 404 page as the pathname will never be "/", but kept for functional
+  // equivalence of the original component's logic.
+  const mainClass = pathname !== '/' ? 'main-page' : '';
 
   return (
     <div className="app-main">
-      <Head>
-        <title>Page not found &mdash; {title}</title>
-      </Head>
+      {/* Metadata (title) is handled by the exported metadata object in app router */}
 
       <Header isErrorPage />
 
-      <main className={pathname !== "/" ? "main-page" : ""}>{children}</main>
+      <main className={mainClass}>
+        {/* The content of your 404 page goes here.
+            The original component rendered 'children', but not-found.tsx is the content itself.
+            You might want to add specific 404 text/UI here.
+        */}
+        <div className="container" style={{ textAlign: 'center', padding: '50px 0' }}>
+          <h1>404 - Page Not Found</h1>
+          <p>The page you are looking for does not exist.</p>
+        </div>
+      </main>
     </div>
   );
 };
 
-export default ErrorPage;
+export default NotFoundPage;
+
+// Add metadata export for the title if this was a page component.
+// For not-found.tsx, metadata is typically handled by the exported metadata object.
+// export const metadata = {
+//   title: 'Page not found — Next.js Ecommerce',
+// };
