@@ -1,8 +1,12 @@
+'use client';
+
+import React from 'react';
+
 type CheckboxType = {
   type?: string;
   label: string;
   name: string;
-  onChange?: () => void;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 const Checkbox = ({ type = "", label, name, onChange }: CheckboxType) => (

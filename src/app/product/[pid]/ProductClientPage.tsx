@@ -1,4 +1,5 @@
-import type { GetServerSideProps } from "next";
+'use client';
+
 import { useState } from "react";
 
 import Breadcrumb from "@/components/breadcrumb";
@@ -11,30 +12,22 @@ import ProductsFeatured from "@/components/products-featured";
 // types
 import type { ProductType } from "@/types";
 
-import Layout from "../../layouts/Main";
-import { server } from "../../utils/server";
-
 type ProductPageType = {
   product: ProductType;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
-
-  return {
-    props: {
-      product,
-    },
-  };
-};
-
-const Product = ({ product }: ProductPageType) => {
+const ProductClientPage = ({ product }: ProductPageType) => {
   const [showBlock, setShowBlock] = useState("description");
 
+  // Fallback or error state handling if product is null/undefined before rendering
+  if (!product) {
+     // This case should ideally be handled by the Server Component page.tsx
+     // before rendering this Client Component, but added here for robustness
+     return <div>Error loading product or product not found.</div>;
+  }
+
   return (
-    <Layout>
+    <>
       <Breadcrumb />
 
       <section className="product-single">
@@ -72,8 +65,8 @@ const Product = ({ product }: ProductPageType) => {
         <ProductsFeatured />
       </div>
       <Footer />
-    </Layout>
+    </>
   );
 };
 
-export default Product;
+export default ProductClientPage;

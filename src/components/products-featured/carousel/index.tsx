@@ -1,25 +1,10 @@
-// import Swiper core and required components
+'use client';
+
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import type { ProductTypeList } from "@/types";
 
 import ProductItem from "../../product-item";
-
-let slidesPerView = 1.3;
-let centeredSlides = true;
-let spaceBetween = 30;
-if (process.browser) {
-  if (window.innerWidth > 768) {
-    slidesPerView = 3;
-    spaceBetween = 35;
-    centeredSlides = false;
-  }
-  if (window.innerWidth > 1024) {
-    slidesPerView = 4;
-    spaceBetween = 65;
-    centeredSlides = false;
-  }
-}
 
 type ProductsCarouselType = {
   products: ProductTypeList[];
@@ -31,12 +16,24 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
   return (
     <div className="products-carousel">
       <Swiper
-        spaceBetween={spaceBetween}
+        spaceBetween={30} // Default mobile spaceBetween
         loop
-        centeredSlides={centeredSlides}
+        centeredSlides={true} // Default mobile centeredSlides
         watchOverflow
-        slidesPerView={slidesPerView}
+        slidesPerView={1.3} // Default mobile slidesPerView
         className="swiper-wrapper"
+        breakpoints={{
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 35,
+            centeredSlides: false,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 65,
+            centeredSlides: false,
+          },
+        }}
       >
         {products.map((item) => (
           <SwiperSlide key={item.id}>
@@ -47,7 +44,6 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
               color={item.color}
               discount={item.discount}
               currentPrice={item.currentPrice}
-              key={item.id}
               images={item.images}
             />
           </SwiperSlide>
