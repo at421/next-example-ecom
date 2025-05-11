@@ -1,4 +1,5 @@
-import type { GetServerSideProps } from "next";
+'use client';
+
 import { useState } from "react";
 
 import Breadcrumb from "@/components/breadcrumb";
@@ -11,30 +12,16 @@ import ProductsFeatured from "@/components/products-featured";
 // types
 import type { ProductType } from "@/types";
 
-import Layout from "../../layouts/Main";
-import { server } from "../../utils/server";
-
-type ProductPageType = {
+type ProductClientPageProps = {
   product: ProductType;
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
-
-  return {
-    props: {
-      product,
-    },
-  };
-};
-
-const Product = ({ product }: ProductPageType) => {
+const ProductClientPage = ({ product }: ProductClientPageProps) => {
   const [showBlock, setShowBlock] = useState("description");
 
   return (
-    <Layout>
+    <>
+      {/* Breadcrumb might ideally be in a layout or parent page component */}
       <Breadcrumb />
 
       <section className="product-single">
@@ -58,7 +45,7 @@ const Product = ({ product }: ProductPageType) => {
                 onClick={() => setShowBlock("reviews")}
                 className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
               >
-                Reviews (2)
+                Reviews (2) {/* Note: Hardcoded (2) might need dynamic update */}
               </button>
             </div>
 
@@ -69,11 +56,13 @@ const Product = ({ product }: ProductPageType) => {
       </section>
 
       <div className="product-single-page">
+        {/* ProductsFeatured seems misplaced here, might belong in a layout or different section */}
         <ProductsFeatured />
       </div>
+      {/* Footer seems misplaced here, typically belongs in the root layout */}
       <Footer />
-    </Layout>
+    </>
   );
 };
 
-export default Product;
+export default ProductClientPage;
