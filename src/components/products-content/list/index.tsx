@@ -1,9 +1,11 @@
+'use client';
+
 import useSwr from "swr";
 
 import type { ProductTypeList } from "@/types";
 
-import ProductItem from "../../product-item";
-import ProductsLoading from "./loading";
+import ProductItem from "@/components/product-item";
+import ProductsLoading from "@/components/products-content/list/loading";
 
 const ProductsContent = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
