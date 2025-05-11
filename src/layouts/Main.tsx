@@ -1,28 +1,20 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
+'use client';
 
-import Header from "@/components/header";
+import { usePathname } from 'next/navigation';
+import React from 'react';
 
-type LayoutType = {
-  title?: string;
-  children?: React.ReactNode;
+type LayoutWrapperProps = {
+  children: React.ReactNode;
 };
 
-const MainLayout = ({ children, title = "Next.js Ecommerce" }: LayoutType) => {
-  const router = useRouter();
-  const pathname = router.pathname;
+const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
+  const pathname = usePathname();
 
   return (
-    <div className="app-main">
-      <Head>
-        <title>{title}</title>
-      </Head>
-
-      <Header />
-
-      <main className={pathname !== "/" ? "main-page" : ""}>{children}</main>
-    </div>
+    <main className={pathname !== '/' ? 'main-page' : ''}>
+      {children}
+    </main>
   );
 };
 
-export default MainLayout;
+export default LayoutWrapper;
