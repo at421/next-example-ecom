@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image"; // Import Image
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
@@ -9,6 +10,7 @@ import { postData } from "@/utils/services";
 type LoginMail = {
   email: string;
   password: string;
+  keepSigned?: boolean; // Add keepSigned to type
 };
 
 const LoginPage = () => {
@@ -18,6 +20,7 @@ const LoginPage = () => {
     await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
+      keepSigned: data.keepSigned, // Include keepSigned in the payload
     });
   };
 
@@ -104,7 +107,7 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
-                <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                <Image src="/images/icons/gmail.svg" alt="gmail" width={20} height={20} /> Gmail
               </button>
             </div>
 

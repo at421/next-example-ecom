@@ -2,6 +2,7 @@
 
 import { some } from "lodash";
 import Link from "next/link";
+import Image from "next/image"; // Added Image import
 import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "@/store";
@@ -41,7 +42,8 @@ const ProductItem = ({
         </button>
 
         <Link href={`/product/${id}`}>
-          <img src={images ? images[0] : ""} alt="product" />
+          {/* Replaced <img> with <Image /> */}
+          <Image src={images ? images[0] : ""} alt="product" fill />
           {discount && <span className="product__discount">{discount}%</span>}
         </Link>
       </div>

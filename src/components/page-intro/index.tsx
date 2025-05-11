@@ -5,10 +5,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/swiper-bundle.css"; // Ensure Swiper styles are imported
 
-SwiperCore.use([EffectFade, Navigation]);
 
 const PageIntro = () => {
-  
+  SwiperCore.use([EffectFade, Navigation]);
+
   return (
     <section className="page-intro">
       <Swiper navigation effect="fade" className="swiper-wrapper">
