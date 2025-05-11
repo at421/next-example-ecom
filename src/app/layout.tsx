@@ -1,0 +1,62 @@
+import "../assets/css/styles.scss";
+import "swiper/swiper.scss";
+import "rc-slider/assets/index.css";
+import "react-rater/lib/react-rater.css";
+
+import { Poppins } from "next/font/google";
+import { GA_TRACKING_ID } from "@/utils/gtag";
+import StoreProvider from "@/store/provider";
+import GtagInitializer from "@/components/GtagInitializer";
+import Layout from "../layouts/Main";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--main-font",
+});
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  return (
+    <html lang="en" className={poppins.variable}>
+      <head>
+      </head>
+      <body>
+        {isProduction && GA_TRACKING_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+
+                  gtag('config', '${GA_TRACKING_ID}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
+
+        <GtagInitializer />
+
+        <StoreProvider>
+          <Layout>
+            {children}
+          </Layout>
+        </StoreProvider>
+      </body>
+    </html>
+  );
+}
