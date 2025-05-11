@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
+import Gallery from "@/components/product-single/gallery";
 import Content from "@/components/product-single/content";
 import Description from "@/components/product-single/description";
-import Gallery from "@/components/product-single/gallery";
 import Reviews from "@/components/product-single/reviews";
 // types
 import type { ProductType } from "@/types";

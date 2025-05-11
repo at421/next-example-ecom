@@ -1,3 +1,5 @@
+'use client';
+
 // import Swiper core and required components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -8,7 +10,10 @@ import ProductItem from "../../product-item";
 let slidesPerView = 1.3;
 let centeredSlides = true;
 let spaceBetween = 30;
-if (process.browser) {
+
+// This logic runs only on the client side because of 'use client'
+// and the explicit window check
+if (typeof window !== 'undefined') {
   if (window.innerWidth > 768) {
     slidesPerView = 3;
     spaceBetween = 35;
@@ -20,6 +25,7 @@ if (process.browser) {
     centeredSlides = false;
   }
 }
+
 
 type ProductsCarouselType = {
   products: ProductTypeList[];
