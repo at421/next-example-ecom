@@ -1,11 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from 'next/server';
+// Assuming utils is at the project root, relative path from app/api/route.ts
+import products from "../../../utils/data/products";
 
-// fake data
-import products from "../../utils/data/products";
+// Function to simulate delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export default (_req: NextApiRequest, res: NextApiResponse) => {
-  // fake loading time
-  setTimeout(() => {
-    res.status(200).json(products);
-  }, 800);
-};
+export async function GET() {
+  // Simulate fake loading time
+  await delay(800);
+
+  // Return the data
+  return NextResponse.json(products, { status: 200 });
+}
