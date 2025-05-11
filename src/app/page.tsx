@@ -2,8 +2,14 @@ import Footer from "@/components/footer";
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
+import type { Metadata } from 'next'
 
-const IndexPage = () => {
+export const metadata: Metadata = {
+  title: 'Home | E-Commerce',
+  description: 'Welcome to our E-Commerce store. Find the best products here.',
+}
+
+export default function Page() {
   return (
     <>
       <PageIntro />
@@ -104,9 +110,6 @@ const IndexPage = () => {
 
       <ProductsFeatured />
       <Subscribe />
-      <Footer />
     </>
   );
-};
-
-export default IndexPage;
+}

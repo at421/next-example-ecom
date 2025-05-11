@@ -1,4 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Register - Next.js E-commerce Template', // Replace with your actual title
+  description: 'Create an account and discover the benefits', // Replace with your actual description
+}
+
 
 const RegisterPage = () => (
   <section className="form-page">

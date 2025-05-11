@@ -1,20 +1,30 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server";
+import { postData } from "@/utils/services";
 
 type ForgotMail = {
   email: string;
+  password?: string; // Keeping password field as it was in original code, though unusual for forgot password
 };
 
-const ForgotPassword = () => {
-  const { register, handleSubmit, errors } = useForm();
+const ForgotPasswordPage = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>();
 
   const onSubmit = async (data: ForgotMail) => {
+    // The original code posted to /api/login for forgot password, which seems incorrect.
+    // Assuming this was intended to trigger a password reset mechanism via the backend.
+    // Keeping the original API endpoint for functional equivalence during migration.
+    // A more typical flow would involve a dedicated /api/forgot-password endpoint.
+    console.log("Submitting forgot password request:", data);
     await postData(`${server}/api/login`, {
       email: data.email,
+      // password: data.password, // The original code didn't send the password in the postData call for forgot password, only email.
     });
+    // Add logic here to handle the response (e.g., show success message, redirect)
   };
 
   return (
@@ -39,8 +49,7 @@ const ForgotPassword = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", {
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -58,13 +67,13 @@ const ForgotPassword = () => {
               )}
             </div>
 
+            {/* Keeping the password field as it was in the original code, although functionally questionable for a forgot password form */}
             <div className="form__input-row">
               <input
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">This field is required</p>
@@ -84,4 +93,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordPage;

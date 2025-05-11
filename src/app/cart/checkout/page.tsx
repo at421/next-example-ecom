@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
@@ -117,22 +119,28 @@ const CheckoutPage = () => {
               <h3 className="block__title">Payment method</h3>
               <ul className="round-options round-options--three">
                 <li className="round-item">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/images/logos/paypal.png" alt="Paypal" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/visa.png" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/visa.png" alt="Visa" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/mastercard.png" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/mastercard.png" alt="Mastercard" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/maestro.png" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/maestro.png" alt="Maestro" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/discover.png" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/discover.png" alt="Discover" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/ideal-logo.svg" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/ideal-logo.svg" alt="Ideal" />
                 </li>
               </ul>
             </div>
@@ -141,19 +149,23 @@ const CheckoutPage = () => {
               <h3 className="block__title">Delivery method</h3>
               <ul className="round-options round-options--two">
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/inpost.svg" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/inpost.svg" alt="Inpost" />
                   <p>$20.00</p>
                 </li>
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/dpd.svg" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/dpd.svg" alt="DPD" />
                   <p>$12.00</p>
                 </li>
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/dhl.svg" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/dhl.svg" alt="DHL" />
                   <p>$15.00</p>
                 </li>
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/maestro.png" alt="Paypal" />
+                   {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/logos/maestro.png" alt="Maestro" />
                   <p>$10.00</p>
                 </li>
               </ul>
@@ -167,7 +179,7 @@ const CheckoutPage = () => {
 
               <div className="checkout-total">
                 <p>Total cost</p>
-                <h3>${priceTotal}</h3>
+                <h3>${priceTotal.toFixed(2)}</h3> {/* Format price to 2 decimal places */}
               </div>
             </div>
           </div>
