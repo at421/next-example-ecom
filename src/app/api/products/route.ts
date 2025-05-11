@@ -1,11 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from 'next/server';
 
 // fake data
-import products from "../../utils/data/products";
+import products from '../../utils/data/products';
 
-export default (_req: NextApiRequest, res: NextApiResponse) => {
+// Simulate delay
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+export async function GET() {
   // fake loading time
-  setTimeout(() => {
-    res.status(200).json(products);
-  }, 800);
-};
+  await sleep(800);
+
+  return NextResponse.json(products, { status: 200 });
+}
