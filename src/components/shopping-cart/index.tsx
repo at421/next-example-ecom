@@ -1,10 +1,12 @@
+'use client';
+
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import type { RootState } from "@/store";
 
-import CheckoutStatus from "../checkout-status";
-import Item from "./item";
+import CheckoutStatus from "@/components/checkout-status";
+import Item from "@/components/shopping-cart/item";
 
 const ShoppingCart = () => {
   const { cartItems } = useSelector((state: RootState) => state.cart);
@@ -12,7 +14,7 @@ const ShoppingCart = () => {
   const priceTotal = () => {
     let totalPrice = 0;
     if (cartItems.length > 0) {
-      cartItems.map((item) => (totalPrice += item.price * item.count));
+      cartItems.forEach((item) => (totalPrice += item.price * item.count));
     }
 
     return totalPrice;

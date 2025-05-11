@@ -1,32 +1,39 @@
+'use client';
+
+import { useState, useEffect } from "react";
 // import Swiper core and required components
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import type { ProductTypeList } from "@/types";
 
-import ProductItem from "../../product-item";
-
-let slidesPerView = 1.3;
-let centeredSlides = true;
-let spaceBetween = 30;
-if (process.browser) {
-  if (window.innerWidth > 768) {
-    slidesPerView = 3;
-    spaceBetween = 35;
-    centeredSlides = false;
-  }
-  if (window.innerWidth > 1024) {
-    slidesPerView = 4;
-    spaceBetween = 65;
-    centeredSlides = false;
-  }
-}
+import ProductItem from "@/components/product-item";
 
 type ProductsCarouselType = {
   products: ProductTypeList[];
 };
 
 const ProductsCarousel = ({ products }: ProductsCarouselType) => {
-  if (!products) return <div>Loading</div>;
+  const [slidesPerView, setSlidesPerView] = useState(1.3);
+  const [centeredSlides, setCenteredSlides] = useState(true);
+  const [spaceBetween, setSpaceBetween] = useState(30);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth > 768) {
+        setSlidesPerView(3);
+        setSpaceBetween(35);
+        setCenteredSlides(false);
+      }
+      if (window.innerWidth > 1024) {
+        setSlidesPerView(4);
+        setSpaceBetween(65);
+        setCenteredSlides(false);
+      }
+    }
+  }, []);
+
+
+  if (!products) return <div>Loading</div>; // Consider a skeleton loader here
 
   return (
     <div className="products-carousel">
@@ -47,7 +54,7 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
               color={item.color}
               discount={item.discount}
               currentPrice={item.currentPrice}
-              key={item.id}
+              key={item.id} // Key should be on the SwiperSlide, not ProductItem
               images={item.images}
             />
           </SwiperSlide>

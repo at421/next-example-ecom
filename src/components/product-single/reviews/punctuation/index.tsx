@@ -15,6 +15,13 @@ const Punctuation = ({
     <section className="product-punctuation">
       <div className="product-punctuation__values">
         <h3>{punctuation}</h3>
+        {/* Rater is a client component, but it's used here in a Server Component.
+            This is fine because Rater doesn't rely on server-side data or context
+            passed directly from the parent Server Component in a way that breaks SSR.
+            It will render its static HTML on the server and hydrate on the client.
+            If Rater needed props that were specific server-fetched objects/functions,
+            it might need to be wrapped in a client component boundary.
+            In this case, the props (total, interactive, rating) are simple types. */}
         <Rater total={5} interactive={false} rating={punctuation} />
         <p>
           <i className="icon-avatar" />
@@ -40,6 +47,9 @@ const Punctuation = ({
       </div>
 
       <div className="punctuation-btn-wrapper">
+        {/* Note: If this button had client-side interaction (e.g., opening a modal with useState),
+            this component would need to be marked as 'use client', or the button and its logic
+            would need to be extracted into a separate client component. */}
         <button type="button" className="btn btn--rounded btn--yellow">
           Add opinion
         </button>

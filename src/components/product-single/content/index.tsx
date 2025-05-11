@@ -1,3 +1,5 @@
+'use client';
+
 import { some } from "lodash";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -116,6 +118,7 @@ const Content = ({ product }: ProductContent) => {
                 type="button"
                 onClick={() => setCount(count - 1)}
                 className="quantity-button__btn"
+                disabled={count <= 1}
               >
                 -
               </button>
