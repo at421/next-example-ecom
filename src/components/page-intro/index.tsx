@@ -7,7 +7,6 @@ const PageIntro = () => {
   return (
     <section className="page-intro">
       <Swiper
-        modules={[EffectFade, Navigation]}
         navigation
         effect="fade"
         className="swiper-wrapper"

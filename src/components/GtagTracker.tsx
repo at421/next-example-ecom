@@ -16,7 +16,7 @@ export default function GtagTracker() {
       const url = pathname + searchParams.toString();
       gtag.pageview(url);
     }
-  }, [pathname, searchParams, isProduction]);
+  }, [pathname, searchParams]);
 
   return null; // This component is only for side effects
 }
