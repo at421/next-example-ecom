@@ -1,5 +1,9 @@
+'use client';
+
 import SwiperCore, { EffectFade, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import "swiper/swiper-bundle.css"; // Ensure Swiper styles are imported
 
 SwiperCore.use([EffectFade, Navigation]);
 

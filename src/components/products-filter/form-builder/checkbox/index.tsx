@@ -1,11 +1,13 @@
+'use client';
+
 type CheckboxType = {
   type?: string;
   label: string;
   name: string;
-  onChange?: () => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Checkbox = ({ type = "", label, name, onChange }: CheckboxType) => (
+const Checkbox: React.FC<CheckboxType> = ({ type = "", label, name, onChange }) => (
   <label
     htmlFor={`${label}-${name}`}
     className={`checkbox ${type ? `checkbox--${type}` : ""}`}

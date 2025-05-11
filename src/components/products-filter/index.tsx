@@ -1,10 +1,12 @@
+"use client";
+
 import Slider from "rc-slider";
 import { useState } from "react";
 
-import productsColors from "../../utils/data/products-colors";
-import productsSizes from "../../utils/data/products-sizes";
+import productsColors from "@/utils/data/products-colors";
+import productsSizes from "@/utils/data/products-sizes";
 // data
-import productsTypes from "../../utils/data/products-types";
+import productsTypes from "@/utils/data/products-types";
 import Checkbox from "./form-builder/checkbox";
 import CheckboxColor from "./form-builder/checkbox-color";
 
