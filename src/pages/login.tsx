@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 import Layout from "../layouts/Main";
@@ -111,7 +112,7 @@ const LoginPage = () => {
                   Facebook
                 </button>
                 <button type="button" className="btn-social google-btn">
-                  <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                  <Image src="/images/icons/gmail.svg" alt="gmail" width={24} height={24} /> Gmail
                 </button>
               </div>
 
