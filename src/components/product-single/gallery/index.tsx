@@ -10,12 +10,14 @@ const Gallery = ({ images }: GalleryProductType) => {
       <div className="product-gallery__thumbs">
         {images.map((image) => (
           <div key={image} className="product-gallery__thumb">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={image} alt="" />
           </div>
         ))}
       </div>
 
       <div className="product-gallery__image">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={featImage} alt="" />
       </div>
     </section>

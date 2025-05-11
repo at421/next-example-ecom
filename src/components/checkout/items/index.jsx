@@ -1,3 +1,5 @@
+'use client';
+
 import { useSelector } from "react-redux";
 
 const CheckoutItems = () => {
@@ -9,7 +11,7 @@ const CheckoutItems = () => {
         <li key={item.id} className="checkout-item">
           <div className="checkout-item__content">
             <div className="checkout-item__img">
-              <img src={item.thumb} />
+              <img src={item.thumb} alt={item.name} />
             </div>
 
             <div className="checkout-item__data">
