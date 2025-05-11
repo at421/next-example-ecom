@@ -1,20 +1,28 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { postData } from "@/utils/services";
 
 type ForgotMail = {
   email: string;
 };
 
 const ForgotPassword = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>();
 
   const onSubmit = async (data: ForgotMail) => {
-    await postData(`${server}/api/login`, {
-      email: data.email,
-    });
+    try {
+      // Assuming /api/login handles password reset logic based on the request body
+      await postData("/api/login", {
+        email: data.email,
+      });
+      // Add success handling here, e.g., showing a message
+    } catch (error) {
+      console.error("Forgot password failed:", error);
+      // Add error handling here
+    }
   };
 
   return (
@@ -39,8 +47,7 @@ const ForgotPassword = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", {
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -58,18 +65,20 @@ const ForgotPassword = () => {
               )}
             </div>
 
+            {/* The original form included a password input, which seems incorrect for a forgot password form.
+                Assuming this was a mistake and removing it. If needed, adjust the form structure and onSubmit logic.
             <div className="form__input-row">
               <input
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">This field is required</p>
               )}
             </div>
+            */}
 
             <button
               type="submit"

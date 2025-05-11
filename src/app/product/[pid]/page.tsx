@@ -1,78 +1,47 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
-
-import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
-import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
-import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
-import ProductsFeatured from "@/components/products-featured";
-// types
 import type { ProductType } from "@/types";
+import { server } from "@/utils/server";
+import ProductClientPage from "@/components/product-single/ProductClientPage";
+import type { Metadata } from 'next';
 
-import { server } from "../../utils/server";
-
-type ProductPageType = {
-  product: ProductType;
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
-
-  return {
-    props: {
-      product,
-    },
+type ProductPageProps = {
+  params: {
+    pid: string;
   };
 };
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const res = await fetch(`${server}/api/product/${params.pid}`);
+  const product: ProductType = await res.json();
+
+  return {
+    title: product.name,
+    description: product.description,
+    // Add other metadata fields as needed, e.g., openGraph
+    // openGraph: {
+    //   images: [product.images[0]],
+    // },
+  };
+}
+
+const getProduct = async (pid: string): Promise<ProductType> => {
+  const res = await fetch(`${server}/api/product/${pid}`);
+  // Add error handling if needed, e.g., check res.ok, throw notFound()
+  const product = await res.json();
+  return product;
+};
+
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    // Handle case where product is not found, e.g., redirect or show 404
+    // For now, assume product is always found based on original getServerSideProps
+    return <div>Product not found</div>;
+  }
 
   return (
-    <>
-      <Breadcrumb />
-
-      <section className="product-single">
-        <div className="container">
-          <div className="product-single__content">
-            <Gallery images={product.images} />
-            <Content product={product} />
-          </div>
-
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
-        </div>
-      </section>
-
-      <div className="product-single-page">
-        <ProductsFeatured />
-      </div>
-      <Footer />
-    </>
+    <ProductClientPage product={product} />
   );
 };
 
-export default Product;
+export default ProductPage;
