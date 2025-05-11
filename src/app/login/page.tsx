@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image"; // Added import
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
@@ -108,7 +109,8 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
-                <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                <Image src="/images/icons/gmail.svg" alt="gmail" width={20} height={20} /> {/* Replaced img with Image */}
+                Gmail
               </button>
             </div>
 

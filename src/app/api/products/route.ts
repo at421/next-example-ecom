@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 // fake data
 import products from "../../../utils/data/products";
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   // fake loading time
   await new Promise(resolve => setTimeout(resolve, 800));
 

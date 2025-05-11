@@ -49,7 +49,7 @@ const ProductsFilter = () => {
               min={0}
               max={20}
               defaultValue={[3, 10]}
-              tipFormatter={(value: any) => `${value}%`}
+              tipFormatter={(value: number) => `${value}%`}
             />
           </div>
         </div>
