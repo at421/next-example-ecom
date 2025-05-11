@@ -1,71 +1,65 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import Breadcrumb from "@/components/breadcrumb";
 import Footer from "@/components/footer";
-import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
-import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
 import ProductsFeatured from "@/components/products-featured";
+import ProductSingleClient from "@/components/product-single/ProductSingleClient";
 // types
 import type { ProductType } from "@/types";
 
-import { server } from "../../utils/server";
+import { server } from "@/utils/server";
 
-type ProductPageType = {
-  product: ProductType;
+type Props = {
+  params: { pid: string };
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
+async function getProduct(pid: string): Promise<ProductType | null> {
+  try {
+    const res = await fetch(`${server}/api/product/${pid}`);
+    if (!res.ok) {
+      // Handle HTTP errors, e.g., 404
+      if (res.status === 404) {
+         return null; // Indicate not found
+      }
+      throw new Error(`Failed to fetch product: ${res.status}`);
+    }
+    const product = await res.json();
+    return product;
+  } catch (error) {
+    console.error("Fetching product failed:", error);
+    return null;
+  }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
 
   return {
-    props: {
-      product,
-    },
+    title: product.name,
+    description: product.description,
+    // Add other metadata like og:image, twitter:card, etc.
   };
-};
+}
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+const ProductPage = async ({ params }: Props) => {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    notFound(); // Use Next.js notFound function for 404
+  }
 
   return (
     <>
       <Breadcrumb />
 
-      <section className="product-single">
-        <div className="container">
-          <div className="product-single__content">
-            <Gallery images={product.images} />
-            <Content product={product} />
-          </div>
-
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
-        </div>
-      </section>
+      <ProductSingleClient product={product} />
 
       <div className="product-single-page">
         <ProductsFeatured />
@@ -75,4 +69,4 @@ const Product = ({ product }: ProductPageType) => {
   );
 };
 
-export default Product;
+export default ProductPage;

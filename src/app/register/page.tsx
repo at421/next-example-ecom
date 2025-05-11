@@ -1,4 +1,9 @@
 import Link from "next/link";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Register',
+};
 
 const RegisterPage = () => (
   <section className="form-page">

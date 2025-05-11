@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
@@ -5,7 +7,7 @@ import CheckoutItems from "@/components/checkout/items";
 import CheckoutStatus from "@/components/checkout-status";
 import type { RootState } from "@/store";
 
-const CheckoutPage = () => {
+const Page = () => {
   const priceTotal = useSelector((state: RootState) => {
     const { cartItems } = state.cart;
     let totalPrice = 0;
@@ -189,4 +191,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default Page;
