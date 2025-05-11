@@ -39,6 +39,7 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
       >
         {products.map((item) => (
           <SwiperSlide key={item.id}>
+            <>
             <ProductItem
               id={item.id}
               name={item.name}
@@ -48,7 +49,8 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
               currentPrice={item.currentPrice}
               images={item.images}
             />
-          </SwperSlide>
+            </>
+          </SwiperSlide>
         ))}
       </Swiper>
     </div>

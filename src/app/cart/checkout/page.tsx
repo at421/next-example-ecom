@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import Image from "next/image";
 
 import CheckoutItems from "@/components/checkout/items";
 import CheckoutStatus from "@/components/checkout-status";
@@ -122,7 +123,7 @@ const CheckoutPage = () => {
                   <img src="/images/logos/paypal.png" alt="Paypal" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/visa.png" alt="Paypal" />
+                  <Image src="/images/logos/visa.png" alt="Visa" width={50} height={30} />
                 </li>
                 <li className="round-item">
                   <img src="/images/logos/mastercard.png" alt="Paypal" />

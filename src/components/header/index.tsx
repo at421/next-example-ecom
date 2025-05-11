@@ -44,7 +44,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
     window.onscroll = function () {
       headerClass();
     };
-  }, [pathname, isErrorPage]); // Added dependencies
+  }, [pathname, isErrorPage, arrayPaths]);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -54,7 +54,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
     setSearchOpen(false);
   };
 
-  // on click outside
   useOnClickOutside(navRef, closeMenu);
   useOnClickOutside(searchRef, closeSearch);
 
@@ -72,7 +71,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
           className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
         >
           <Link href="/products">Products</Link>
-          {/* Assuming these are external or anchor links */}
           <a href="#">Inspiration</a>
           <a href="#">Rooms</a>
           <button className="site-nav__btn">

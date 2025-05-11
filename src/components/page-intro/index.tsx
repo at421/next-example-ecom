@@ -25,7 +25,7 @@ const PageIntro = () => {
               </div>
             </div>
           </div>
-        </SwperSlide>
+        </SwiperSlide>
 
         <SwiperSlide>
           <div

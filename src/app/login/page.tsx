@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image"; // Imported Image component
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
@@ -9,6 +10,7 @@ import { postData } from "@/utils/services";
 type LoginMail = {
   email: string;
   password: string;
+  keepSigned: boolean;
 };
 
 const LoginPage = () => {
@@ -18,6 +20,7 @@ const LoginPage = () => {
     await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
+      keepSigned: data.keepSigned,
     });
   };
 
@@ -84,7 +87,7 @@ const LoginPage = () => {
                   <input
                     type="checkbox"
                     id="check-signed-in"
-                    {...register("keepSigned" as any, { required: false })} // Assuming 'keepSigned' is part of LoginMail or handle type assertion
+                    {...register("keepSigned", { required: false })}
                   />
                   <span className="checkbox__check" />
                   <p>Keep me signed in</p>
@@ -104,7 +107,8 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
-                <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                <Image src="/images/icons/gmail.svg" alt="gmail" width={20} height={20} /> {/* Replaced img with Image */}
+                Gmail
               </button>
             </div>
 
