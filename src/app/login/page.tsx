@@ -1,8 +1,11 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server"; // Updated import path
+import { postData } from "@/utils/services"; // Updated import path
 
 type LoginMail = {
   email: string;
@@ -10,13 +13,21 @@ type LoginMail = {
 };
 
 const LoginPage = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm(); // Use formState for errors
+  const router = useRouter(); // Get router instance
 
   const onSubmit = async (data: LoginMail) => {
-    await postData(`${server}/api/login`, {
-      email: data.email,
-      password: data.password,
-    });
+    try {
+      await postData(`${server}/api/login`, {
+        email: data.email,
+        password: data.password,
+      });
+      // Assuming successful login redirects to products page
+      router.push("/products");
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Handle login error (e.g., display error message)
+    }
   };
 
   return (
@@ -43,8 +54,7 @@ const LoginPage = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", { // Use spread syntax for register
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -67,8 +77,7 @@ const LoginPage = () => {
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })} // Use spread syntax for register
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">This field is required</p>
@@ -83,9 +92,8 @@ const LoginPage = () => {
                 >
                   <input
                     type="checkbox"
-                    name="keepSigned"
                     id="check-signed-in"
-                    ref={register({ required: false })}
+                    {...register("keepSigned", { required: false })} // Use spread syntax for register
                   />
                   <span className="checkbox__check" />
                   <p>Keep me signed in</p>
