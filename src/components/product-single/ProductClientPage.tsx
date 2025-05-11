@@ -21,6 +21,7 @@ const ProductClientPage = ({ product }: ProductClientPageProps) => {
 
   return (
     <>
+      {/* Breadcrumb might ideally be in a layout or parent page component */}
       <Breadcrumb />
 
       <section className="product-single">

@@ -1,5 +1,7 @@
+'use client';
+
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
@@ -13,12 +15,12 @@ type HeaderType = {
 };
 
 const Header = ({ isErrorPage }: HeaderType) => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const arrayPaths = ["/"];
 
   const [onTop, setOnTop] = useState(
-    !(!arrayPaths.includes(router.pathname) || isErrorPage),
+    !(!arrayPaths.includes(pathname) || isErrorPage),
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -34,7 +36,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
   };
 
   useEffect(() => {
-    if (!arrayPaths.includes(router.pathname) || isErrorPage) {
+    if (!arrayPaths.includes(pathname) || isErrorPage) {
       return;
     }
 
@@ -42,7 +44,11 @@ const Header = ({ isErrorPage }: HeaderType) => {
     window.onscroll = function () {
       headerClass();
     };
-  }, []);
+
+    return () => {
+      window.onscroll = null; // Cleanup scroll listener
+    };
+  }, [pathname, isErrorPage]);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -98,7 +104,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
               className="icon-search"
             />
           </button>
-          <Link href="/cart" legacyBehavior>
+          <Link href="/cart">
             <button className="btn-cart">
               <i className="icon-cart" />
               {cartItems.length > 0 && (
@@ -106,7 +112,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
               )}
             </button>
           </Link>
-          <Link href="/login" legacyBehavior>
+          <Link href="/login">
             <button className="site-header__btn-avatar">
               <i className="icon-avatar" />
             </button>

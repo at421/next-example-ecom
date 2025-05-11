@@ -1,41 +1,54 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 // import Swiper core and required components
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import type { ProductTypeList } from "@/types";
 
-import ProductItem from "../../product-item";
-
-let slidesPerView = 1.3;
-let centeredSlides = true;
-let spaceBetween = 30;
-if (process.browser) {
-  if (window.innerWidth > 768) {
-    slidesPerView = 3;
-    spaceBetween = 35;
-    centeredSlides = false;
-  }
-  if (window.innerWidth > 1024) {
-    slidesPerView = 4;
-    spaceBetween = 65;
-    centeredSlides = false;
-  }
-}
+import ProductItem from "@/components/product-item";
 
 type ProductsCarouselType = {
   products: ProductTypeList[];
 };
 
 const ProductsCarousel = ({ products }: ProductsCarouselType) => {
+  const [swiperParams, setSwiperParams] = useState({
+    slidesPerView: 1.3,
+    centeredSlides: true,
+    spaceBetween: 30,
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      let slidesPerView = 1.3;
+      let centeredSlides = true;
+      let spaceBetween = 30;
+
+      if (window.innerWidth > 768) {
+        slidesPerView = 3;
+        spaceBetween = 35;
+        centeredSlides = false;
+      }
+      if (window.innerWidth > 1024) {
+        slidesPerView = 4;
+        spaceBetween = 65;
+        centeredSlides = false;
+      }
+      setSwiperParams({ slidesPerView, spaceBetween, centeredSlides });
+    }
+  }, []); // Empty dependency array means this effect runs once after the initial render
+
   if (!products) return <div>Loading</div>;
 
   return (
     <div className="products-carousel">
       <Swiper
-        spaceBetween={spaceBetween}
+        spaceBetween={swiperParams.spaceBetween}
         loop
-        centeredSlides={centeredSlides}
+        centeredSlides={swiperParams.centeredSlides}
         watchOverflow
-        slidesPerView={slidesPerView}
+        slidesPerView={swiperParams.slidesPerView}
         className="swiper-wrapper"
       >
         {products.map((item) => (
@@ -47,7 +60,7 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
               color={item.color}
               discount={item.discount}
               currentPrice={item.currentPrice}
-              key={item.id}
+              key={item.id} // Redundant key here, already on SwiperSlide
               images={item.images}
             />
           </SwiperSlide>
