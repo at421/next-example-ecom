@@ -1,71 +1,67 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
-
 import Breadcrumb from "@/components/breadcrumb";
 import Footer from "@/components/footer";
-import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
-import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
 import ProductsFeatured from "@/components/products-featured";
-// types
+import ProductDetailsClient from "@/components/product-single/ProductDetailsClient";
 import type { ProductType } from "@/types";
+import { notFound } from "next/navigation";
 
-import { server } from "../../utils/server";
+// Define metadata for the page
+export async function generateMetadata({ params }: { params: { pid: string } }) {
+  const { pid } = params;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/product/${pid}`);
 
-type ProductPageType = {
-  product: ProductType;
-};
+  if (!res.ok) {
+      // Handle error or return default metadata if product not found for metadata
+      return {
+          title: 'Product Not Found',
+      };
+  }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
+  const product: ProductType = await res.json();
 
   return {
-    props: {
-      product,
-    },
+    title: product.name, // Use product name for the title
+    description: product.description,
+    // Add more metadata fields as needed (og:image, twitter:card, etc.)
   };
-};
+}
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+
+async function getProduct(pid: string): Promise<ProductType | null> {
+  try {
+    // Fetch data directly in the server component
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}/api/product/${pid}`, {
+      next: { revalidate: 3600 } // Revalidate data every hour
+    });
+
+    if (!res.ok) {
+      // Handle HTTP errors
+      console.error(`Error fetching product ${pid}: ${res.status}`);
+      return null;
+    }
+
+    const product: ProductType = await res.json();
+    return product;
+  } catch (error) {
+    console.error(`Failed to fetch product ${pid}:`, error);
+    return null;
+  }
+}
+
+const ProductPage = async ({ params }: { params: { pid: string } }) => {
+  const { pid } = params;
+  const product = await getProduct(pid);
+
+  if (!product) {
+    // If product is not found, render the not-found page
+    notFound();
+  }
 
   return (
     <>
       <Breadcrumb />
 
-      <section className="product-single">
-        <div className="container">
-          <div className="product-single__content">
-            <Gallery images={product.images} />
-            <Content product={product} />
-          </div>
-
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
-        </div>
-      </section>
+      <ProductDetailsClient product={product} />
 
       <div className="product-single-page">
         <ProductsFeatured />
@@ -75,4 +71,4 @@ const Product = ({ product }: ProductPageType) => {
   );
 };
 
-export default Product;
+export default ProductPage;
