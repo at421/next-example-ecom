@@ -11,7 +11,6 @@ import ProductsFeatured from "@/components/products-featured";
 // types
 import type { ProductType } from "@/types";
 
-import Layout from "../../layouts/Main";
 import { server } from "../../utils/server";
 
 type ProductPageType = {
@@ -34,7 +33,7 @@ const Product = ({ product }: ProductPageType) => {
   const [showBlock, setShowBlock] = useState("description");
 
   return (
-    <Layout>
+    <>
       <Breadcrumb />
 
       <section className="product-single">
@@ -72,7 +71,7 @@ const Product = ({ product }: ProductPageType) => {
         <ProductsFeatured />
       </div>
       <Footer />
-    </Layout>
+    </>
   );
 };
 
