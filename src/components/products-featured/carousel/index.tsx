@@ -1,41 +1,56 @@
-// import Swiper core and required components
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import type { ProductTypeList } from "@/types";
 
-import ProductItem from "../../product-item";
+import ProductItem from "@/components/product-item";
 
-let slidesPerView = 1.3;
-let centeredSlides = true;
-let spaceBetween = 30;
-if (process.browser) {
-  if (window.innerWidth > 768) {
-    slidesPerView = 3;
-    spaceBetween = 35;
-    centeredSlides = false;
-  }
-  if (window.innerWidth > 1024) {
-    slidesPerView = 4;
-    spaceBetween = 65;
-    centeredSlides = false;
-  }
-}
+const initialSlidesPerView = 1.3;
+const initialCenteredSlides = true;
+const initialSpaceBetween = 30;
 
 type ProductsCarouselType = {
   products: ProductTypeList[];
 };
 
 const ProductsCarousel = ({ products }: ProductsCarouselType) => {
+  const [swiperConfig, setSwiperConfig] = useState({
+    slidesPerView: initialSlidesPerView,
+    centeredSlides: initialCenteredSlides,
+    spaceBetween: initialSpaceBetween,
+  });
+
+  useEffect(() => {
+    let slidesPerView = initialSlidesPerView;
+    let centeredSlides = initialCenteredSlides;
+    let spaceBetween = initialSpaceBetween;
+
+    if (window.innerWidth > 768) {
+      slidesPerView = 3;
+      spaceBetween = 35;
+      centeredSlides = false;
+    }
+    if (window.innerWidth > 1024) {
+      slidesPerView = 4;
+      spaceBetween = 65;
+      centeredSlides = false;
+    }
+    setSwiperConfig({ slidesPerView, centeredSlides, spaceBetween });
+
+  }, []);
+
   if (!products) return <div>Loading</div>;
 
   return (
     <div className="products-carousel">
       <Swiper
-        spaceBetween={spaceBetween}
+        spaceBetween={swiperConfig.spaceBetween}
         loop
-        centeredSlides={centeredSlides}
+        centeredSlides={swiperConfig.centeredSlides}
         watchOverflow
-        slidesPerView={slidesPerView}
+        slidesPerView={swiperConfig.slidesPerView}
         className="swiper-wrapper"
       >
         {products.map((item) => (
@@ -47,7 +62,6 @@ const ProductsCarousel = ({ products }: ProductsCarouselType) => {
               color={item.color}
               discount={item.discount}
               currentPrice={item.currentPrice}
-              key={item.id}
               images={item.images}
             />
           </SwiperSlide>

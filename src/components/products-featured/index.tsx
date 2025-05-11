@@ -1,7 +1,9 @@
+'use client';
+
 import Link from "next/link";
 import useSwr from "swr";
 
-import ProductsCarousel from "./carousel";
+import ProductsCarousel from "@/components/products-featured/carousel";
 
 const ProductsFeatured = () => {
   const fetcher = (url: string) => fetch(url).then((res) => res.json());

@@ -1,6 +1,8 @@
-import Rater from "react-rater";
+'use client';
 
-import type { PunctuationType } from "@/types";
+import Rater from 'react-rater';
+
+import type { PunctuationType } from '@/types';
 
 const Punctuation = ({
   votes,

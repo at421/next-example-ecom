@@ -1,10 +1,12 @@
+'use client';
+
 import SwiperCore, { EffectFade, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 SwiperCore.use([EffectFade, Navigation]);
 
 const PageIntro = () => {
-  
+
   return (
     <section className="page-intro">
       <Swiper navigation effect="fade" className="swiper-wrapper">
@@ -23,7 +25,7 @@ const PageIntro = () => {
               </div>
             </div>
           </div>
-        </SwiperSlide>
+        </SwperSlide>
 
         <SwiperSlide>
           <div
@@ -39,8 +41,7 @@ const PageIntro = () => {
                 </a>
               </div>
             </div>
-          </div>
-        </SwiperSlide>
+          </SwiperSlide>
       </Swiper>
 
       <div className="shop-data">
