@@ -1,9 +1,11 @@
+'use client';
+
 import { useDispatch } from "react-redux";
 
 import { removeProduct, setCount } from "@/store/reducers/cart";
 import type { ProductStoreType } from "@/types";
 
-const ShoppingCart = ({
+const ShoppingCartItem = ({
   thumb,
   name,
   id,
@@ -28,8 +30,8 @@ const ShoppingCart = ({
     );
   };
 
-  const setProductCount = (count: number) => {
-    if (count <= 0) {
+  const setProductCount = (newCount: number) => {
+    if (newCount <= 0) {
       return;
     }
 
@@ -43,7 +45,7 @@ const ShoppingCart = ({
         count,
         price,
       },
-      count,
+      count: newCount,
     };
 
     dispatch(setCount(payload));
@@ -96,4 +98,4 @@ const ShoppingCart = ({
   );
 };
 
-export default ShoppingCart;
+export default ShoppingCartItem;
