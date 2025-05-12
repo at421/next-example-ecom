@@ -1,17 +1,20 @@
 import Header from "@/components/header";
+import React from 'react';
 
 export const metadata = {
   title: "Page not found — Next.js Ecommerce",
 };
 
-const NotFound = () => {
+interface NotFoundProps {
+  children?: React.ReactNode;
+}
+
+const NotFound: React.FC<NotFoundProps> = ({ children }) => {
   return (
     <div className="app-main">
       <Header isErrorPage />
 
       <main className="main-page">
-        {/* Original component expected children, but app/not-found.tsx is the page content itself */}
-        {/* Adding a default "Page Not Found" message */}
         <div style={{ textAlign: 'center', padding: '50px 0' }}>
           <h1>404</h1>
           <h2>Page Not Found</h2>

@@ -4,10 +4,23 @@ import Content from "@/components/product-single/content";
 import Gallery from "@/components/product-single/gallery";
 import ProductsFeatured from "@/components/products-featured";
 import ProductInfoTabs from "@/components/product-single/ProductInfoTabs"; // New Client Component
-import type { ProductType } from "@/types";
+// Removed: import type { ProductType } from "@/types"; // Assuming the type definition is moved here
 import { server } from "@/utils/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+
+// Added ProductType definition within this file as requested
+interface ProductType {
+  id: string | number; // Added property as requested
+  thumb: string; // Added property as requested
+  name: string;
+  price: number; // Added property as requested
+  count: number; // Added property as requested
+  description: string; // Added property as requested
+  images: string[]; // Assuming images is an array of strings based on usage
+  // Add other properties that might be used by Content or ProductInfoTabs
+  // For example: details: string; etc.
+}
 
 interface ProductPageProps {
   params: {

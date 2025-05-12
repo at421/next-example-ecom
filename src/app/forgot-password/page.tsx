@@ -1,7 +1,7 @@
 'use client';
 
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormRegisterReturn } from "react-hook-form";
 
 import { server } from "@/utils/server";
 import { postData } from "@/utils/services";
@@ -56,18 +56,6 @@ const ForgotPassword = () => {
                 <p className="message message--error">
                   Please write a valid email
                 </p>
-              )}
-            </div>
-
-            <div className="form__input-row">
-              <input
-                className="form__input"
-                type="password"
-                placeholder="Password"
-                {...register("password", { required: true })}
-              />
-              {errors.password && errors.password.type === "required" && (
-                <p className="message message--error">This field is required</p>
               )}
             </div>
 

@@ -1,8 +1,8 @@
 'use client';
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import useOnClickOutside from "use-onclickoutside";
 
@@ -15,10 +15,9 @@ type HeaderType = {
 };
 
 const Header = ({ isErrorPage }: HeaderType) => {
-  const router = useRouter();
   const pathname = usePathname();
   const { cartItems } = useSelector((state: RootState) => state.cart);
-  const arrayPaths = ["/"];
+  const arrayPaths = useMemo(() => ["/"], []);
 
   const [onTop, setOnTop] = useState(
     !(!arrayPaths.includes(pathname) || isErrorPage),
@@ -50,10 +49,10 @@ const Header = ({ isErrorPage }: HeaderType) => {
 
     return () => {
       if (typeof window !== 'undefined') {
-        window.onscroll = null; // Clean up the event listener
+        window.onscroll = null;
       }
     };
-  }, [pathname, isErrorPage]);
+  }, [pathname, isErrorPage, arrayPaths]);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -63,7 +62,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
     setSearchOpen(false);
   };
 
-  // on click outside
   useOnClickOutside(navRef, closeMenu);
   useOnClickOutside(searchRef, closeSearch);
 

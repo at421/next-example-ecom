@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import products from "@/utils/data/products";
 
 export async function GET(
-  request: Request,
   context: { params: { pid: string } }
 ) {
   const { pid } = context.params;

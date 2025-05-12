@@ -1,6 +1,7 @@
 'use client';
 
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 
 import { removeProduct, setCount } from "@/store/reducers/cart";
 import type { ProductStoreType } from "@/types";
@@ -56,7 +57,8 @@ const ShoppingCartItem = ({
       <td>
         <div className="cart-product">
           <div className="cart-product__img">
-            <img src={thumb} alt="" />
+            {/* width and height props or the fill prop might be required for optimal image rendering with next/image, depending on how the image is used and its source */}
+            <Image src={thumb} alt="" />
           </div>
 
           <div className="cart-product__content">
