@@ -1,13 +1,17 @@
-import Footer from "@/components/footer";
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
+import Footer from "@/components/footer";
+import type { Metadata } from 'next'
 
-import Layout from "../layouts/Main";
+export const metadata: Metadata = {
+  title: 'Home | Next.js E-commerce',
+  description: 'Welcome to the home page of our Next.js e-commerce store.',
+}
 
 const IndexPage = () => {
   return (
-    <Layout>
+    <>
       <PageIntro />
 
       <section className="featured">
@@ -107,7 +111,7 @@ const IndexPage = () => {
       <ProductsFeatured />
       <Subscribe />
       <Footer />
-    </Layout>
+    </>
   );
 };
 

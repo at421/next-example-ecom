@@ -1,9 +1,12 @@
+'use client';
+
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 
 import { removeProduct, setCount } from "@/store/reducers/cart";
 import type { ProductStoreType } from "@/types";
 
-const ShoppingCart = ({
+const ShoppingCartItem = ({
   thumb,
   name,
   id,
@@ -28,8 +31,8 @@ const ShoppingCart = ({
     );
   };
 
-  const setProductCount = (count: number) => {
-    if (count <= 0) {
+  const setProductCount = (newCount: number) => {
+    if (newCount <= 0) {
       return;
     }
 
@@ -43,7 +46,7 @@ const ShoppingCart = ({
         count,
         price,
       },
-      count,
+      count: newCount,
     };
 
     dispatch(setCount(payload));
@@ -54,7 +57,8 @@ const ShoppingCart = ({
       <td>
         <div className="cart-product">
           <div className="cart-product__img">
-            <img src={thumb} alt="" />
+            {/* width and height props or the fill prop might be required for optimal image rendering with next/image, depending on how the image is used and its source */}
+            <Image src={thumb} alt="" />
           </div>
 
           <div className="cart-product__content">
@@ -96,4 +100,4 @@ const ShoppingCart = ({
   );
 };
 
-export default ShoppingCart;
+export default ShoppingCartItem;

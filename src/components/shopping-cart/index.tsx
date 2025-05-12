@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
@@ -6,13 +8,25 @@ import type { RootState } from "@/store";
 import CheckoutStatus from "../checkout-status";
 import Item from "./item";
 
+// Define the type for a single item in the cartItems array based on usage
+type CartItemType = {
+  id: string; // Assuming id is a string based on the key prop
+  thumb: string;
+  name: string;
+  color: string;
+  price: number;
+  size: string;
+  count: number;
+};
+
+
 const ShoppingCart = () => {
   const { cartItems } = useSelector((state: RootState) => state.cart);
 
   const priceTotal = () => {
     let totalPrice = 0;
     if (cartItems.length > 0) {
-      cartItems.map((item) => (totalPrice += item.price * item.count));
+      cartItems.map((item: CartItemType) => (totalPrice += item.price * item.count));
     }
 
     return totalPrice;
@@ -39,7 +53,7 @@ const ShoppingCart = () => {
                   <th />
                 </tr>
 
-                {cartItems.map((item) => (
+                {cartItems.map((item: CartItemType) => (
                   <Item
                     key={item.id}
                     id={item.id}

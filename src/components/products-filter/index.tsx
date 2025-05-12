@@ -1,10 +1,12 @@
+'use client';
+
 import Slider from "rc-slider";
 import { useState } from "react";
 
-import productsColors from "../../utils/data/products-colors";
-import productsSizes from "../../utils/data/products-sizes";
+import productsColors from "@/utils/data/products-colors";
+import productsSizes from "@/utils/data/products-sizes";
 // data
-import productsTypes from "../../utils/data/products-types";
+import productsTypes from "@/utils/data/products-types";
 import Checkbox from "./form-builder/checkbox";
 import CheckboxColor from "./form-builder/checkbox-color";
 
@@ -16,6 +18,13 @@ const ProductsFilter = () => {
 
   const addQueryParams = () => {
     // query params changes
+    // In app router, you would typically use useRouter from 'next/navigation'
+    // const router = useRouter();
+    // const pathname = usePathname();
+    // const searchParams = useSearchParams();
+    // const currentParams = new URLSearchParams(searchParams.toString());
+    // Update currentParams based on form state/changes
+    // router.push(`${pathname}?${currentParams.toString()}`);
   };
 
   return (
@@ -47,7 +56,7 @@ const ProductsFilter = () => {
               min={0}
               max={20}
               defaultValue={[3, 10]}
-              tipFormatter={(value) => `${value}%`}
+              tipFormatter={(value: number) => `${value}%`}
             />
           </div>
         </div>
