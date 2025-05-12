@@ -1,13 +1,14 @@
-import Footer from "@/components/footer";
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
-import Subscribe from "@/components/subscribe";
 
-import Layout from "../layouts/Main";
+export const metadata = {
+  title: "Home Page",
+  description: "Welcome to the home page of your store.",
+};
 
-const IndexPage = () => {
+const HomePage = () => {
   return (
-    <Layout>
+    <>
       <PageIntro />
 
       <section className="featured">
@@ -105,10 +106,8 @@ const IndexPage = () => {
       </section>
 
       <ProductsFeatured />
-      <Subscribe />
-      <Footer />
-    </Layout>
+    </>
   );
 };
 
-export default IndexPage;
+export default HomePage;

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type GalleryProductType = {
   images: string[];
 };
@@ -10,13 +12,13 @@ const Gallery = ({ images }: GalleryProductType) => {
       <div className="product-gallery__thumbs">
         {images.map((image) => (
           <div key={image} className="product-gallery__thumb">
-            <img src={image} alt="" />
+            <Image src={image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" />
           </div>
         ))}
       </div>
 
       <div className="product-gallery__image">
-        <img src={featImage} alt="" />
+        <Image src={featImage} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" />
       </div>
     </section>
   );

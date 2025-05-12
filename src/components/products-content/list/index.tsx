@@ -1,3 +1,5 @@
+'use client';
+
 import useSwr from "swr";
 
 import type { ProductTypeList } from "@/types";
@@ -10,6 +12,7 @@ const ProductsContent = () => {
   const { data, error } = useSwr("/api/products", fetcher);
 
   if (error) return <div>Failed to load users</div>;
+
   return (
     <>
       {!data && <ProductsLoading />}
