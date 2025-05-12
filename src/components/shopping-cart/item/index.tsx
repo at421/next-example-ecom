@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useDispatch } from "react-redux";
 
 import { removeProduct, setCount } from "@/store/reducers/cart";
@@ -56,7 +57,7 @@ const ShoppingCart = ({
       <td>
         <div className="cart-product">
           <div className="cart-product__img">
-            <img src={thumb} alt="" />
+            <Image src={thumb} alt="" width={50} height={50} />
           </div>
 
           <div className="cart-product__content">

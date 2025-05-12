@@ -1,7 +1,6 @@
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
-import Footer from "@/components/footer";
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

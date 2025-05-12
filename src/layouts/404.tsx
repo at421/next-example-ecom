@@ -4,11 +4,10 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/header";
 
 type LayoutType = {
-  title?: string;
   children?: React.ReactNode;
 };
 
-const ErrorPage = ({ children, title }: LayoutType) => {
+const ErrorPage = ({ children }: LayoutType) => {
   const pathname = usePathname();
 
   // In the app router, metadata (like title) is typically handled by

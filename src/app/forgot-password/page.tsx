@@ -11,16 +11,12 @@ type ForgotMail = {
 };
 
 const ForgotPassword = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>(); // Use formState to access errors
+  const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>();
 
   const onSubmit = async (data: ForgotMail) => {
-    // Note: The original code sent email to /api/login, which seems incorrect for forgot password.
-    // Assuming this is the intended API endpoint based on the original code.
-    // You might want to adjust the API endpoint and expected response based on your actual backend.
     await postData(`${server}/api/login`, {
       email: data.email,
     });
-    // Add logic here to handle success/failure, e.g., show a message to the user
     console.log("Password reset request sent for:", data.email);
   };
 
@@ -61,21 +57,6 @@ const ForgotPassword = () => {
                 <p className="message message--error">
                   Please write a valid email
                 </p>
-              )}
-            </div>
-
-            {/* Note: The original form included a password input for forgot password,
-               which is unusual. I've kept it as-is based on the source code,
-               but you might want to remove this field if it's not intended. */}
-            <div className="form__input-row">
-              <input
-                className="form__input"
-                type="password"
-                placeholder="Password"
-                {...register("password", { required: true })} // Assuming 'password' is a field name in ForgotMail type if needed
-              />
-              {errors.password && errors.password.type === "required" && (
-                <p className="message message--error">This field is required</p>
               )}
             </div>
 
