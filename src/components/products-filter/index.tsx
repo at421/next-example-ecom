@@ -1,12 +1,15 @@
+'use client';
+
 import Slider from "rc-slider";
+import "rc-slider/assets/index.css"; // Import slider styles
 import { useState } from "react";
 
-import productsColors from "../../utils/data/products-colors";
-import productsSizes from "../../utils/data/products-sizes";
+import productsColors from "@/utils/data/products-colors";
+import productsSizes from "@/utils/data/products-sizes";
 // data
-import productsTypes from "../../utils/data/products-types";
-import Checkbox from "./form-builder/checkbox";
-import CheckboxColor from "./form-builder/checkbox-color";
+import productsTypes from "@/utils/data/products-types";
+import Checkbox from "@/components/products-filter/form-builder/checkbox";
+import CheckboxColor from "@/components/products-filter/form-builder/checkbox-color";
 
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);

@@ -1,4 +1,8 @@
+'use client';
+
 import Rater from "react-rater";
+import "react-rater/lib/react-rater.css";
+import Image from "next/image";
 
 import type { ReviewType } from "@/types";
 import createMarkup from "@/utils/markup";
@@ -13,7 +17,7 @@ const ReviewsList = ({ reviews }: ReviewsListType) => {
       {reviews.map((review, index) => (
         <div key={index} className="review-item">
           <div className="review__avatar">
-            <img src={review.avatar} alt="avatar" />
+            <Image src={review.avatar} alt={`${review.name}'s avatar`} width={50} height={50} />
           </div>
 
           <div className="review__content">

@@ -1,4 +1,7 @@
+'use client';
+
 import { useDispatch } from "react-redux";
+import Image from 'next/image';
 
 import { removeProduct, setCount } from "@/store/reducers/cart";
 import type { ProductStoreType } from "@/types";
@@ -53,8 +56,14 @@ const ShoppingCart = ({
     <tr>
       <td>
         <div className="cart-product">
-          <div className="cart-product__img">
-            <img src={thumb} alt="" />
+          <div className="cart-product__img relative">
+            <Image
+              src={thumb}
+              alt=""
+              fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ objectFit: 'cover' }}
+            />
           </div>
 
           <div className="cart-product__content">
