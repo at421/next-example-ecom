@@ -52,7 +52,7 @@ const Header = ({ isErrorPage }: HeaderType) => {
         window.onscroll = null; // Clean up the scroll listener
       }
     };
-  }, [pathname, isErrorPage]);
+  }, [pathname, isErrorPage, arrayPaths]);
 
   const closeMenu = () => {
     setMenuOpen(false);

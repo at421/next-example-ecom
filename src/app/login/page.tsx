@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
@@ -9,12 +10,15 @@ import { postData } from "@/utils/services";
 type LoginMail = {
   email: string;
   password: string;
+  keepSigned: boolean; // Added keepSigned to the type
 };
 
 const LoginPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginMail>();
 
   const onSubmit = async (data: LoginMail) => {
+    // Note: keepSigned is not used in the postData call in the original code,
+    // but it's included in the type definition now.
     await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
@@ -108,7 +112,7 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
-                <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                <Image src="/images/icons/gmail.svg" alt="gmail" width={24} height={24} /> Gmail
               </button>
             </div>
 
