@@ -1,36 +1,39 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
-
 import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
 import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
 import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
+import ProductInfo from "@/components/product-single/info";
 import ProductsFeatured from "@/components/products-featured";
-// types
 import type { ProductType } from "@/types";
+import { notFound } from 'next/navigation';
 
-import { server } from "../../utils/server";
+export async function generateMetadata({ params }: { params: { pid: string } }) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/product/${params.pid}`);
 
-type ProductPageType = {
-  product: ProductType;
-};
+  if (!res.ok) {
+     return {
+        title: 'Product Not Found',
+        description: 'This product does not exist.'
+     };
+  }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
+  const product: ProductType = await res.json();
 
   return {
-    props: {
-      product,
-    },
+    title: product.name || 'Product Details',
+    description: product.description?.substring(0, 150) || 'Learn more about this product.',
   };
-};
+}
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+const ProductPage = async ({ params }: { params: { pid: string } }) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/product/${params.pid}`, {
+    next: { revalidate: 3600 }
+  });
+
+  if (!res.ok) {
+    notFound();
+  }
+
+  const product: ProductType = await res.json();
 
   return (
     <>
@@ -43,36 +46,15 @@ const Product = ({ product }: ProductPageType) => {
             <Content product={product} />
           </div>
 
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
+          <ProductInfo product={product} />
         </div>
       </section>
 
       <div className="product-single-page">
         <ProductsFeatured />
       </div>
-      <Footer />
     </>
   );
 };
 
-export default Product;
+export default ProductPage;

@@ -1,9 +1,11 @@
+'use client';
+
 import ShoppingCart from "@/components/shopping-cart";
 
-const Products = () => (
-  <>
+const CartPage = () => {
+  return (
     <ShoppingCart />
-  </>
-);
+  );
+};
 
-export default Products;
+export default CartPage;
