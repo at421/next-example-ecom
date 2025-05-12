@@ -1,20 +1,27 @@
+'use client';
+
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-import { server } from "../utils/server";
-import { postData } from "../utils/services";
+import { server } from "@/utils/server";
+import { postData } from "@/utils/services";
 
 type ForgotMail = {
   email: string;
 };
 
 const ForgotPassword = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm<ForgotMail>(); // Use formState to access errors
 
   const onSubmit = async (data: ForgotMail) => {
+    // Note: The original code sent email to /api/login, which seems incorrect for forgot password.
+    // Assuming this is the intended API endpoint based on the original code.
+    // You might want to adjust the API endpoint and expected response based on your actual backend.
     await postData(`${server}/api/login`, {
       email: data.email,
     });
+    // Add logic here to handle success/failure, e.g., show a message to the user
+    console.log("Password reset request sent for:", data.email);
   };
 
   return (
@@ -39,8 +46,7 @@ const ForgotPassword = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
-                name="email"
-                ref={register({
+                {...register("email", {
                   required: true,
                   pattern:
                     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -58,13 +64,15 @@ const ForgotPassword = () => {
               )}
             </div>
 
+            {/* Note: The original form included a password input for forgot password,
+               which is unusual. I've kept it as-is based on the source code,
+               but you might want to remove this field if it's not intended. */}
             <div className="form__input-row">
               <input
                 className="form__input"
                 type="password"
                 placeholder="Password"
-                name="password"
-                ref={register({ required: true })}
+                {...register("password", { required: true })} // Assuming 'password' is a field name in ForgotMail type if needed
               />
               {errors.password && errors.password.type === "required" && (
                 <p className="message message--error">This field is required</p>

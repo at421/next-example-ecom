@@ -1,9 +1,15 @@
-import Footer from "@/components/footer";
 import PageIntro from "@/components/page-intro";
 import ProductsFeatured from "@/components/products-featured";
 import Subscribe from "@/components/subscribe";
+import Footer from "@/components/footer";
+import type { Metadata } from 'next'
 
-const IndexPage = () => {
+export const metadata: Metadata = {
+  title: 'Home | E-Commerce', // Replace with actual title if needed
+  description: 'Welcome to our e-commerce store!', // Replace with actual description
+}
+
+const Page = () => {
   return (
     <>
       <PageIntro />
@@ -85,6 +91,7 @@ const IndexPage = () => {
                   If an item arrived damaged or you've changed your mind, you
                   can send it back for a full refund.
                 </p>
+              {/* This 'i' tag likely represents an icon and might need adjustment based on how icons are handled in the new project */}
               </div>
             </li>
 
@@ -104,9 +111,10 @@ const IndexPage = () => {
 
       <ProductsFeatured />
       <Subscribe />
-      <Footer />
+      {/* Assuming Footer is part of the main layout.tsx, remove it here if so */}
+      {/* <Footer /> */}
     </>
   );
 };
 
-export default IndexPage;
+export default Page;
