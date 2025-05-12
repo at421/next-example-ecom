@@ -1,51 +1,26 @@
 "use client";
 
 import { useEffect, Fragment } from "react";
-import Router from "next/router"; // Note: Using next/router in app directory client component
-import * as gtag from "@/utils/gtag"; // Adjust path based on your file structure
+import { usePathname } from "next/navigation";
+import * as gtag from "@/utils/gtag";
 
 const isProduction = process.env.NODE_ENV === "production";
 
 const Analytics = () => {
+  const pathname = usePathname();
+
   useEffect(() => {
     if (isProduction) {
-      const handleRouteChange = (url: string) => {
-        gtag.pageview(url);
-      };
-      Router.events.on("routeChangeComplete", handleRouteChange);
-
-      return () => {
-        Router.events.off("routeChangeComplete", handleRouteChange);
-      };
+      // Track page views on route changes
+      gtag.pageview(pathname);
     }
-  }, []);
+  }, [pathname]); // Depend on pathname to re-run effect on navigation
 
-  return (
-    <Fragment>
-      {isProduction && (
-        <>
-          {/* Global Site Tag (gtag.js) - Google Analytics */}
-          <script
-            async
-            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-          />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
+  // Note: The Google Analytics script tags should typically be placed
+  // in the root layout.tsx file using next/script for app router.
+  // This component now primarily handles client-side route change tracking.
 
-                gtag('config', '${gtag.GA_TRACKING_ID}', {
-                  page_path: window.location.pathname,
-                });
-              `,
-            }}
-          />
-        </>
-      )}
-    </Fragment>
-  );
+  return <Fragment />; // This component doesn't render visible UI
 };
 
 export default Analytics;

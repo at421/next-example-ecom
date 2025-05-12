@@ -1,3 +1,5 @@
+'use client';
+
 // import Swiper core and required components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -8,18 +10,22 @@ import ProductItem from "../../product-item";
 let slidesPerView = 1.3;
 let centeredSlides = true;
 let spaceBetween = 30;
-if (process.browser) {
-  if (window.innerWidth > 768) {
-    slidesPerView = 3;
-    spaceBetween = 35;
-    centeredSlides = false;
-  }
-  if (window.innerWidth > 1024) {
-    slidesPerView = 4;
-    spaceBetween = 65;
-    centeredSlides = false;
-  }
+
+// Note: process.browser is deprecated.
+// In the app router, window is available in 'use client' components after hydration.
+// This logic might cause hydration mismatches as it runs differently server/client.
+// A more robust solution would use state and useEffect.
+if (typeof window !== 'undefined' && window.innerWidth > 768) {
+  slidesPerView = 3;
+  spaceBetween = 35;
+  centeredSlides = false;
 }
+if (typeof window !== 'undefined' && window.innerWidth > 1024) {
+  slidesPerView = 4;
+  spaceBetween = 65;
+  centeredSlides = false;
+}
+
 
 type ProductsCarouselType = {
   products: ProductTypeList[];
