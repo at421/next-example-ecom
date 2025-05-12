@@ -1,3 +1,5 @@
+'use client';
+
 import SwiperCore, { EffectFade, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -23,7 +25,7 @@ const PageIntro = () => {
               </div>
             </div>
           </div>
-        </SwiperSlide>
+        </SwperSlide>
 
         <SwiperSlide>
           <div
