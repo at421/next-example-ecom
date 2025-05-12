@@ -7,7 +7,6 @@ import ProductInfoTabs from "@/components/product-single/ProductInfoTabs"; // Ne
 
 // types
 import type { ProductType } from "@/types";
-
 import { server } from "@/utils/server"; // Assuming utils is at the root
 
 type ProductPageProps = {
@@ -17,11 +16,20 @@ type ProductPageProps = {
 };
 
 // Fetch data directly in the Server Component
-async function getProduct(pid: string): Promise<ProductType> {
-  const res = await fetch(`${server}/api/product/${pid}`);
-  // Add error handling if needed, e.g., check res.ok
-  const product = await res.json();
-  return product;
+async function getProduct(pid: string): Promise<ProductType | null> {
+  try {
+    const res = await fetch(`${server}/api/product/${pid}`);
+    if (!res.ok) {
+      // Handle HTTP errors
+      console.error(`Error fetching product ${pid}: ${res.status}`);
+      return null;
+    }
+    const product: ProductType = await res.json();
+    return product;
+  } catch (error) {
+    console.error(`Failed to fetch product ${pid}:`, error);
+    return null;
+  }
 }
 
 // Metadata is exported directly from the Server Component page
@@ -51,7 +59,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
       <section className="product-single">
         <div className="container">
           <div className="product-single__content">
-            <Gallery images={product.images} />
+            <Gallery images={product.images.map(img => img.url)} />
             <Content product={product} />
           </div>
 

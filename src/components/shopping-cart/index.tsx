@@ -14,7 +14,7 @@ const ShoppingCart = () => {
   const priceTotal = () => {
     let totalPrice = 0;
     if (cartItems.length > 0) {
-      cartItems.map((item) => (totalPrice += item.price * item.count));
+      cartItems.map((item: RootState['cart']['cartItems'][number]) => (totalPrice += item.price * item.count));
     }
 
     return totalPrice;
@@ -41,7 +41,7 @@ const ShoppingCart = () => {
                   <th />
                 </tr>
 
-                {cartItems.map((item) => (
+                {cartItems.map((item: RootState['cart']['cartItems'][number]) => (
                   <Item
                     key={item.id}
                     id={item.id}

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 // fake data
-import products from '../../utils/data/products';
+import products from '@/utils/data/products';
 
 // Simulate delay
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

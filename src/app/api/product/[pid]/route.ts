@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 import products from '@/utils/data/products'; // Assuming utils is at the root and aliased
 
 export async function GET(
-  request: Request,
   { params }: { params: { pid: string } }
 ) {
   const { pid } = params;

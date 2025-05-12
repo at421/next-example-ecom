@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 SwiperCore.use([EffectFade, Navigation]);
 
 const PageIntro = () => {
-
   return (
     <section className="page-intro">
       <Swiper navigation effect="fade" className="swiper-wrapper">
@@ -25,7 +24,7 @@ const PageIntro = () => {
               </div>
             </div>
           </div>
-        </SwiperSlide>
+        </SwperSlide>
 
         <SwiperSlide>
           <div
