@@ -1,36 +1,67 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
-
 import Breadcrumb from "@/components/breadcrumb";
 import Footer from "@/components/footer";
 import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
 import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
 import ProductsFeatured from "@/components/products-featured";
-// types
+import ProductInfoTabs from "@/components/product-single/ProductInfoTabs"; // New Client Component
 import type { ProductType } from "@/types";
+import { server } from "@/utils/server";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { server } from "../../utils/server";
+interface ProductPageProps {
+  params: {
+    pid: string;
+  };
+}
 
-type ProductPageType = {
-  product: ProductType;
-};
+async function getProduct(pid: string): Promise<ProductType | null> {
+  try {
+    const res = await fetch(`${server}/api/product/${pid}`);
+    if (!res.ok) {
+      // Handle non-2xx responses, e.g., 404
+      if (res.status === 404) {
+        return null; // Product not found
+      }
+      throw new Error(`Failed to fetch product: ${res.statusText}`);
+    }
+    const product = await res.json();
+    return product;
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return null;
+  }
+}
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    // Fallback metadata or indicate not found
+    return {
+      title: 'Product Not Found',
+      description: 'The requested product could not be found.',
+    };
+  }
 
   return {
-    props: {
-      product,
+    title: product.name,
+    description: product.description,
+    // Add other metadata like Open Graph, etc.
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: product.images && product.images.length > 0 ? [{ url: product.images[0] }] : [],
     },
   };
-};
+}
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+const ProductPage = async ({ params }: ProductPageProps) => {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    notFound(); // Use Next.js notFound helper for 404
+  }
 
   return (
     <>
@@ -43,27 +74,9 @@ const Product = ({ product }: ProductPageType) => {
             <Content product={product} />
           </div>
 
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
+          {/* Client Component for interactive info tabs */}
+          <ProductInfoTabs product={product} />
 
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
         </div>
       </section>
 
@@ -75,4 +88,4 @@ const Product = ({ product }: ProductPageType) => {
   );
 };
 
-export default Product;
+export default ProductPage;
