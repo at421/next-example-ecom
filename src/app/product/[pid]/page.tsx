@@ -1,78 +1,66 @@
-import type { GetServerSideProps } from "next";
-import { useState } from "react";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 
-import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
-import Content from "@/components/product-single/content";
-import Description from "@/components/product-single/description";
-import Gallery from "@/components/product-single/gallery";
-import Reviews from "@/components/product-single/reviews";
-import ProductsFeatured from "@/components/products-featured";
-// types
+import { server } from "@/utils/server";
 import type { ProductType } from "@/types";
+import ProductClient from "@/components/product-single/ProductClient";
 
-import { server } from "../../utils/server";
-
-type ProductPageType = {
-  product: ProductType;
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { pid } = query;
-  const res = await fetch(`${server}/api/product/${pid}`);
-  const product = await res.json();
-
-  return {
-    props: {
-      product,
-    },
+type ProductPageProps = {
+  params: {
+    pid: string;
   };
 };
 
-const Product = ({ product }: ProductPageType) => {
-  const [showBlock, setShowBlock] = useState("description");
+async function getProduct(pid: string): Promise<ProductType | null> {
+  try {
+    const res = await fetch(`${server}/api/product/${pid}`);
+    if (!res.ok) {
+      // This will activate the closest `error.js` Error Boundary
+      // or trigger notFound() if status is 404
+      if (res.status === 404) {
+          return null; // Indicate not found
+      }
+      throw new Error('Failed to fetch data');
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Fetching product failed:", error);
+    return null; // Indicate failure
+  }
+}
+
+export async function generateMetadata(
+  { params }: ProductPageProps,
+): Promise<Metadata> {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+    };
+  }
+
+  return {
+    title: product.name,
+    description: product.description?.substring(0, 160) || `Details for product ${product.name}`,
+    // Add other metadata fields as needed
+    openGraph: {
+      title: product.name,
+      description: product.description?.substring(0, 160) || `Details for product ${product.name}`,
+      images: product.images?.[0] ? [product.images[0]] : [],
+    },
+  };
+}
+
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const product = await getProduct(params.pid);
+
+  if (!product) {
+    notFound(); // Renders the not-found.js page
+  }
 
   return (
-    <>
-      <Breadcrumb />
-
-      <section className="product-single">
-        <div className="container">
-          <div className="product-single__content">
-            <Gallery images={product.images} />
-            <Content product={product} />
-          </div>
-
-          <div className="product-single__info">
-            <div className="product-single__info-btns">
-              <button
-                type="button"
-                onClick={() => setShowBlock("description")}
-                className={`btn btn--rounded ${showBlock === "description" ? "btn--active" : ""}`}
-              >
-                Description
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowBlock("reviews")}
-                className={`btn btn--rounded ${showBlock === "reviews" ? "btn--active" : ""}`}
-              >
-                Reviews (2)
-              </button>
-            </div>
-
-            <Description show={showBlock === "description"} />
-            <Reviews product={product} show={showBlock === "reviews"} />
-          </div>
-        </div>
-      </section>
-
-      <div className="product-single-page">
-        <ProductsFeatured />
-      </div>
-      <Footer />
-    </>
+    <ProductClient product={product} />
   );
-};
-
-export default Product;
+}
