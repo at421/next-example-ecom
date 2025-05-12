@@ -1,33 +1,33 @@
 'use client';
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import useOnClickOutside from "use-onclickoutside"; // Assuming this hook is client-component compatible
+import useOnClickOutside from "use-onclickoutside";
 
 import type { RootState } from "@/store";
 
-import Logo from "@/assets/icons/logo"; // Assuming Logo is a client component or SVG
+import Logo from "@/assets/icons/logo";
 
 type HeaderType = {
   isErrorPage?: boolean;
 };
 
 const Header = ({ isErrorPage }: HeaderType) => {
-  const router = useRouter();
+  const pathname = usePathname();
   const { cartItems } = useSelector((state: RootState) => state.cart);
-  const arrayPaths = ["/"];
+  const arrayPaths = useMemo(() => ["/"], []);
 
   const [onTop, setOnTop] = useState(
-    !(!arrayPaths.includes(router.pathname) || isErrorPage),
+    !(!arrayPaths.includes(pathname) || isErrorPage),
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const navRef = useRef(null);
   const searchRef = useRef(null);
 
-  const headerClass = () => {
+  const headerClass = (): void => {
     if (typeof window !== 'undefined' && window.pageYOffset === 0) {
       setOnTop(true);
     } else {
@@ -36,23 +36,21 @@ const Header = ({ isErrorPage }: HeaderType) => {
   };
 
   useEffect(() => {
-    if (!arrayPaths.includes(router.pathname) || isErrorPage) {
+    if (!arrayPaths.includes(pathname) || isErrorPage) {
       return;
     }
 
-    // Ensure window is defined before accessing
     if (typeof window !== 'undefined') {
       headerClass();
       window.onscroll = function () {
         headerClass();
       };
 
-      // Cleanup function for scroll listener
       return () => {
         window.onscroll = null;
       };
     }
-  }, [router.pathname, isErrorPage]); // Added dependencies
+  }, [pathname, isErrorPage, arrayPaths]);
 
   const closeMenu = () => {
     setMenuOpen(false);
@@ -62,7 +60,6 @@ const Header = ({ isErrorPage }: HeaderType) => {
     setSearchOpen(false);
   };
 
-  // on click outside
   useOnClickOutside(navRef, closeMenu);
   useOnClickOutside(searchRef, closeSearch);
 
@@ -80,8 +77,8 @@ const Header = ({ isErrorPage }: HeaderType) => {
           className={`site-nav ${menuOpen ? "site-nav--open" : ""}`}
         >
           <Link href="/products">Products</Link>
-          <a href="#">Inspiration</a> {/* Note: Using <a> instead of <Link> might cause full page reloads. Consider if this should be a Link. */}
-          <a href="#">Rooms</a> {/* Note: Using <a> instead of <Link> might cause full page reloads. Consider if this should be a Link. */}
+          <a href="#">Inspiration</a>
+          <a href="#">Rooms</a>
           <button className="site-nav__btn">
             <p>Account</p>
           </button>

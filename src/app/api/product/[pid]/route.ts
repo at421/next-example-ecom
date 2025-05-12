@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import products from '../../../../utils/data/products';
 
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: { pid: string } }
 ) {
   const { pid } = params;

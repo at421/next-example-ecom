@@ -8,13 +8,24 @@ import type { RootState } from "@/store";
 import CheckoutStatus from "../checkout-status";
 import Item from "./item";
 
+// Define the type for a cart item based on usage
+interface CartItem {
+  id: string; // Changed from number to string
+  name: string;
+  price: number;
+  count: number;
+  thumb: string;
+  color?: string; // Assuming color and size might be optional based on context
+  size?: string;
+}
+
 const ShoppingCart = () => {
   const { cartItems } = useSelector((state: RootState) => state.cart);
 
   const priceTotal = () => {
     let totalPrice = 0;
     if (cartItems.length > 0) {
-      cartItems.map((item) => (totalPrice += item.price * item.count));
+      cartItems.map((item: CartItem) => (totalPrice += item.price * item.count));
     }
 
     return totalPrice;
@@ -41,15 +52,15 @@ const ShoppingCart = () => {
                   <th />
                 </tr>
 
-                {cartItems.map((item) => (
+                {cartItems.map((item: CartItem) => (
                   <Item
-                    key={item.id}
+                    key={item.id.toString()} // Changed key prop
                     id={item.id}
                     thumb={item.thumb}
                     name={item.name}
-                    color={item.color}
+                    color={item.color || ''} // Changed color prop
                     price={item.price}
-                    size={item.size}
+                    size={item.size || ''} // Changed size prop
                     count={item.count}
                   />
                 ))}

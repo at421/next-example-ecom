@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import Image from 'next/image';
 
 import CheckoutItems from "@/components/checkout/items";
 import CheckoutStatus from "@/components/checkout-status";
@@ -117,22 +118,22 @@ const CheckoutPage = () => {
               <h3 className="block__title">Payment method</h3>
               <ul className="round-options round-options--three">
                 <li className="round-item">
-                  <img src="/images/logos/paypal.png" alt="Paypal" />
+                  <Image src="/images/logos/paypal.png" alt="Paypal" fill={true} sizes="100vw" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/visa.png" alt="Paypal" />
+                  <Image src="/images/logos/visa.png" alt="Paypal" fill={true} sizes="100vw" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/mastercard.png" alt="Paypal" />
+                  <Image src="/images/logos/mastercard.png" alt="Paypal" fill={true} sizes="100vw" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/maestro.png" alt="Paypal" />
+                  <Image src="/images/logos/maestro.png" alt="Paypal" fill={true} sizes="100vw" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/discover.png" alt="Paypal" />
+                  <Image src="/images/logos/discover.png" alt="Paypal" fill={true} sizes="100vw" />
                 </li>
                 <li className="round-item">
-                  <img src="/images/logos/ideal-logo.svg" alt="Paypal" />
+                  <Image src="/images/logos/ideal-logo.svg" alt="Paypal" fill={true} sizes="100vw" />
                 </li>
               </ul>
             </div>
@@ -141,19 +142,19 @@ const CheckoutPage = () => {
               <h3 className="block__title">Delivery method</h3>
               <ul className="round-options round-options--two">
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/inpost.svg" alt="Paypal" />
+                  <Image src="/images/logos/inpost.svg" alt="Paypal" fill={true} sizes="100vw" />
                   <p>$20.00</p>
                 </li>
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/dpd.svg" alt="Paypal" />
+                  <Image src="/images/logos/dpd.svg" alt="Paypal" fill={true} sizes="100vw" />
                   <p>$12.00</p>
                 </li>
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/dhl.svg" alt="Paypal" />
+                  <Image src="/images/logos/dhl.svg" alt="Paypal" fill={true} sizes="100vw" />
                   <p>$15.00</p>
                 </li>
                 <li className="round-item round-item--bg">
-                  <img src="/images/logos/maestro.png" alt="Paypal" />
+                  <Image src="/images/logos/maestro.png" alt="Paypal" fill={true} sizes="100vw" />
                   <p>$10.00</p>
                 </li>
               </ul>

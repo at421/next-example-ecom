@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from 'next/image';
 import { useForm } from "react-hook-form";
 
 import { server } from "@/utils/server";
@@ -9,6 +10,7 @@ import { postData } from "@/utils/services";
 type LoginMail = {
   email: string;
   password: string;
+  keepSigned?: boolean;
 };
 
 const LoginPage = () => {
@@ -18,6 +20,7 @@ const LoginPage = () => {
     await postData(`${server}/api/login`, {
       email: data.email,
       password: data.password,
+      keepSigned: data.keepSigned,
     });
   };
 
@@ -45,6 +48,7 @@ const LoginPage = () => {
                 className="form__input"
                 placeholder="email"
                 type="text"
+                // eslint-disable-next-line
                 {...register("email", {
                   required: true,
                   pattern:
@@ -68,6 +72,7 @@ const LoginPage = () => {
                 className="form__input"
                 type="password"
                 placeholder="Password"
+                // eslint-disable-next-line
                 {...register("password", { required: true })}
               />
               {errors.password && errors.password.type === "required" && (
@@ -84,6 +89,7 @@ const LoginPage = () => {
                   <input
                     type="checkbox"
                     id="check-signed-in"
+                    // eslint-disable-next-line
                     {...register("keepSigned", { required: false })}
                   />
                   <span className="checkbox__check" />
@@ -104,7 +110,7 @@ const LoginPage = () => {
                 Facebook
               </button>
               <button type="button" className="btn-social google-btn">
-                <img src="/images/icons/gmail.svg" alt="gmail" /> Gmail
+                <Image src="/images/icons/gmail.svg" alt="gmail" width={24} height={24} /> Gmail
               </button>
             </div>
 

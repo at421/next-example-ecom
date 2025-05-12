@@ -50,8 +50,8 @@ const ProductClient = ({ product }: ProductPageType) => {
             </div>
 
             {/* Render Description and Reviews conditionally based on state */}
-            {showBlock === "description" && <Description />}
-            {showBlock === "reviews" && <Reviews product={product} />}
+            {showBlock === "description" && <Description show={true} />}
+            {showBlock === "reviews" && <Reviews product={product} show={true} />}
           </div>
         </div>
       </section>

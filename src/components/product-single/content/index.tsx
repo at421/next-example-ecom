@@ -9,9 +9,9 @@ import { addProduct } from "@/store/reducers/cart";
 import { toggleFavProduct } from "@/store/reducers/user";
 import type { ProductStoreType, ProductType } from "@/types";
 
-import productsColors from "../../../../../utils/data/products-colors";
-import productsSizes from "../../../../../utils/data/products-sizes";
-import CheckboxColor from "../../../../products-filter/form-builder/checkbox-color";
+import productsColors from "@/utils/data/products-colors";
+import productsSizes from "@/utils/data/products-sizes";
+import CheckboxColor from "@/components/products-filter/form-builder/checkbox-color";
 
 type ProductContent = {
   product: ProductType;
@@ -81,13 +81,13 @@ const Content = ({ product }: ProductContent) => {
         <div className="product-filter-item">
           <h5>Color:</h5>
           <div className="checkbox-color-wrapper">
-            {productsColors.map((type) => (
+            {productsColors.map((colorItem) => (
               <CheckboxColor
-                key={type.id}
+                key={colorItem.id}
                 type="radio"
                 name="product-color"
-                color={type.color}
-                valueName={type.label}
+                color={colorItem.color}
+                valueName={colorItem.label}
                 onChange={onColorSet}
               />
             ))}
@@ -101,9 +101,9 @@ const Content = ({ product }: ProductContent) => {
             <div className="select-wrapper">
               <select onChange={onSelectChange}>
                 <option>Choose size</option>
-                {productsSizes.map((type) => (
-                  <option key={type.id} value={type.label}>
-                    {type.label}
+                {productsSizes.map((sizeItem) => (
+                  <option key={sizeItem.id} value={sizeItem.label}>
+                    {sizeItem.label}
                   </option>
                 ))}
               </select>
@@ -118,7 +118,7 @@ const Content = ({ product }: ProductContent) => {
                 type="button"
                 onClick={() => setCount(count - 1)}
                 className="quantity-button__btn"
-                disabled={count <= 1} // Added check to prevent count going below 1
+                disabled={count <= 1}
               >
                 -
               </button>
