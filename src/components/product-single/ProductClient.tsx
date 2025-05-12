@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-import Breadcrumb from "@/components/breadcrumb";
-import Footer from "@/components/footer";
 import Content from "@/components/product-single/content";
 import Description from "@/components/product-single/description";
 import Gallery from "@/components/product-single/gallery";
@@ -26,8 +24,6 @@ const ProductClient = ({ product }: ProductPageType) => {
 
   return (
     <>
-      <Breadcrumb />
-
       <section className="product-single">
         <div className="container">
           <div className="product-single__content">
@@ -63,7 +59,6 @@ const ProductClient = ({ product }: ProductPageType) => {
       <div className="product-single-page">
         <ProductsFeatured />
       </div>
-      <Footer />
     </>
   );
 };

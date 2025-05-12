@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import * as gtag from '@/utils/gtag'; // Assuming gtag utilities are now at '@/utils/gtag'
+import * as gtag from '@/utils/gtag';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -15,5 +15,5 @@ export function GtagInitializer() {
     }
   }, [pathname]);
 
-  return null; // This component doesn't render anything
+  return null;
 }

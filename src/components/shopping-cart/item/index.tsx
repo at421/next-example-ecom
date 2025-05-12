@@ -1,9 +1,11 @@
+'use client';
+
 import { useDispatch } from "react-redux";
 
 import { removeProduct, setCount } from "@/store/reducers/cart";
 import type { ProductStoreType } from "@/types";
 
-const ShoppingCart = ({
+const ShoppingCartItem = ({
   thumb,
   name,
   id,
@@ -96,4 +98,4 @@ const ShoppingCart = ({
   );
 };
 
-export default ShoppingCart;
+export default ShoppingCartItem;
